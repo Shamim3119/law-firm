@@ -37,7 +37,7 @@ class Login extends Component
             'password' => $this->password
         ])) {
             session()->regenerate();
-            return redirect()->route('parameters');
+            return redirect()->route('parameter.index');
         }
 
         session()->flash('error', 'Invalid credentials');
@@ -45,6 +45,6 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.auth.login');
+        return view('livewire.auth.login')->layout('layouts.auth'); ;
     }
 }
