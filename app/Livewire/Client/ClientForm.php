@@ -40,7 +40,7 @@ class ClientForm extends Component
 
         session()->flash('message', $this->client_id ? 'Client Updated Successfully' : 'Client Created Successfully');
 
-        return redirect()->route('client.index');
+        return redirect()->route('client.index', ['tab' => 'clients']);
     }
 
     public function render()

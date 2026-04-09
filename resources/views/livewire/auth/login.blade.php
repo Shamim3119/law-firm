@@ -6,8 +6,8 @@
     @endif
 
     <form wire:submit.prevent="login">
-        <input type="email" wire:model="email" placeholder="Email"><br><br>
-        <input type="password" wire:model="password" placeholder="Password"><br><br>
+        <input value="" type="email" wire:model="email" placeholder="Email"><br><br>
+        <input value="" type="password" wire:model="password" placeholder="Password"><br><br>
 
         <button type="submit">Login</button>
     </form>

@@ -9,10 +9,12 @@ class CasesForm extends Component
 {
     public $case_id;
     public $title, $descriptions;
-
+ 
 
     public function mount($id = null)
     {
+ 
+
         if ($id) {
             $case = Cases::findOrFail($id);
             $this->case_id = $case->id;
@@ -38,7 +40,7 @@ class CasesForm extends Component
 
         session()->flash('message', $this->case_id ? 'Case Updated Successfully' : 'Case Created Successfully');
 
-        return redirect()->route('cases.index');
+        return redirect()->route('cases.index', ['tab' => 'cases']);
     }
 
     public function render()

@@ -58,6 +58,27 @@
               </li>
 
 
+              <li class="nav-item {{ request()->routeIs('employee.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-universal-access"></i>
+                  <p>
+                    Employees
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('employee.index') }}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Employee Info</p>
+                    </a>
+                </li>
+                </ul>
+              </li>
+
+
+
+
               <li class="nav-item {{ request()->routeIs('client.*') || request()->routeIs('appointment.*') || request()->routeIs('cases.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                   <i class="nav-icon bi bi-boxes"></i>

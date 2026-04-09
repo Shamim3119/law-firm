@@ -1,7 +1,5 @@
 <div> <!-- single root -->
-    @if(session()->has('message'))
-        <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
+ 
 
     <form wire:submit.prevent="save">
         <div class="mb-3">
@@ -26,6 +24,9 @@
             <label>Department</label>
             <select class="form-select" wire:model="department_id">
                 <option selected="" disabled="" value="">Choose...</option>
+                    @foreach($departments as $dept)
+                        <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                    @endforeach
             </select>
             @error('department_id') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
@@ -34,6 +35,9 @@
             <label>Designation</label>
             <select class="form-select" wire:model="designation_id">
                 <option selected="" disabled="" value="">Choose...</option>
+                    @foreach($designations as $designation)
+                        <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                    @endforeach
             </select>
             @error('designation_id') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
@@ -43,3 +47,4 @@
         <a href="{{ route('employee.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+

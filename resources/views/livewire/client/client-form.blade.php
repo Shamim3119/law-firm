@@ -1,7 +1,5 @@
-<div> <!-- single root -->
-    @if(session()->has('message'))
-        <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
+<div>  
+ 
 
     <form wire:submit.prevent="save">
         <div class="mb-3">

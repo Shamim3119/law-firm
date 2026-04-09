@@ -1,39 +1,33 @@
 <div>
-    <!-- Tabs: route-based -->
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a href="{{ route('parameter.index', ['tab' => 'religion']) }}" 
-               class="nav-link {{ request('tab', 'religion') == 'religion' ? 'active' : '' }}">
-               Religion
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('parameter.index', ['tab' => 'department']) }}" 
-               class="nav-link {{ request('tab') == 'department' ? 'active' : '' }}">
-               Department
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('parameter.index', ['tab' => 'designation']) }}" 
-               class="nav-link {{ request('tab') == 'designation' ? 'active' : '' }}">
-               Designation
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('parameter.index', ['tab' => 'appointment-type']) }}" 
-               class="nav-link {{ request('tab') == 'appointment-type' ? 'active' : '' }}">
-               Appointment Type
-            </a>
-        </li>
-    </ul>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a href="{{ route('parameter.index', ['tab' => 'religion']) }}" 
+           class="nav-link {{ $activeTab == 'religion' ? 'active' : '' }}">
+           Religion
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('parameter.index', ['tab' => 'department']) }}" 
+           class="nav-link {{ $activeTab == 'department' ? 'active' : '' }}">
+           Department
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('parameter.index', ['tab' => 'designation']) }}" 
+           class="nav-link {{ $activeTab == 'designation' ? 'active' : '' }}">
+           Designation
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('parameter.index', ['tab' => 'appointment-type']) }}" 
+           class="nav-link {{ $activeTab == 'appointment-type' ? 'active' : '' }}">
+           Appointment Type
+        </a>
+    </li>
+</ul>
 
-    <br>
-
-    <!-- Flash message -->
-    @if (session()->has('message'))
-        <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
-
+<br> 
+ 
     <!-- Form -->
     <form wire:submit.prevent="store">
         <div class="mb-3">
@@ -72,4 +66,7 @@
             @endforeach
         </tbody>
     </table>
+
+{!! MyHelper::get_toast_dispatch() !!}
+ 
 </div>

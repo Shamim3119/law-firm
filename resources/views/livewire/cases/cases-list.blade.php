@@ -38,13 +38,7 @@
 
 <a href="{{ route('cases.create') }}" class="btn btn-primary mb-3">Add Cases</a>
 <br>
-@if (session()->has('message'))
-    <div class="alert alert-success">
-        {{ session('message') }}
-    </div>
-    <br>
-@endif
-
+ 
     <table class="table table-bordered">
         <thead>
             <tr>

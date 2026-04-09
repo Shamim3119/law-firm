@@ -38,7 +38,7 @@ class AppointmentForm extends Component
 
         session()->flash('message', $this->appointment_id ? 'Appointment Updated Successfully' : 'Appointment Created Successfully');
 
-        return redirect()->route('appointment.index');
+        return redirect()->route('appointment.index', ['tab' => 'appointments']);
     }
 
     

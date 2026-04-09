@@ -4,14 +4,22 @@ namespace App\Livewire\Employee;
 
 use Livewire\Component;
 use App\Models\Employee;
+use App\Models\Parameter;
 
 class EmployeeForm extends Component
 {
     public $employee_id;
     public $name, $phone, $email, $department_id, $designation_id;
 
+    public $departments = [];
+    public $designations = [];
+
+
     public function mount($id = null)
     {
+        $this->departments = Parameter::where('tag', 'department')->get();
+        $this->designations = Parameter::where('tag', 'designation')->get();
+
         if ($id) {
             $employee = Employee::findOrFail($id);
             $this->employee_id = $employee->id;
@@ -26,11 +34,11 @@ class EmployeeForm extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required',
-            'phone' => 'required',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
             'email' => 'required|email',
-            'department_id' => 'required',
-            'designation_id' => 'required',
+            'department_id' => 'required|integer',
+            'designation_id' => 'required|integer',
         ]);
 
         Employee::updateOrCreate(
@@ -45,6 +53,9 @@ class EmployeeForm extends Component
         );
 
         session()->flash('message', $this->employee_id ? 'Employee Updated Successfully' : 'Employee Created Successfully');
+        
+        
+       // $this->dispatch('show-toast', message: session('message'));
 
         return redirect()->route('employee.index');
     }
@@ -63,5 +74,8 @@ class EmployeeForm extends Component
         Employee::findOrFail($id)->delete();
 
         session()->flash('message', 'Employee Deleted Successfully');
+    //    $this->dispatch('show-toast', message: session('message'));
     }
+
+
 }

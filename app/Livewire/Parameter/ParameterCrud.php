@@ -17,7 +17,7 @@ class ParameterCrud extends Component
             $this->activeTab = request('tab');
         }
     }
-    
+
     public function render()
     {
         $this->parameters = Parameter::where('tag', $this->activeTab)->get();
@@ -61,6 +61,8 @@ class ParameterCrud extends Component
             session()->flash('message', ucfirst($this->activeTab) . ' Created Successfully.');
         }
 
+        $this->dispatch('show-toast', message: session('message'));
+
         $this->resetInputFields();
         $this->updateMode = false;
     }
@@ -79,6 +81,7 @@ class ParameterCrud extends Component
     {
         Parameter::find($id)?->delete();
         session()->flash('message', 'Parameter Deleted Successfully.');
+        $this->dispatch('show-toast', message: session('message'));
     }
 
     public function cancel()

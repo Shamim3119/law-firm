@@ -1,61 +1,124 @@
-<div> <!-- single root -->
+<div>
 
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {{ $activeTab == 'employees' ? 'active' : '' }}" 
+               href="{{ route('employee.index', ['tab' => 'employees']) }}">
+               Employees
+            </a>
+        </li>
+    </ul>
 
-
-<ul class="nav nav-tabs">
-
-  <li class="nav-item">
-    <a 
-      class="nav-link {{ $activeTab == 'employees' ? 'active' : '' }}" 
-      href="{{ route('employee.index', ['tab' => 'employees']) }}" 
-       >
-      Employees
-    </a>
-  </li>
-</ul>
-<br>  
-
-
-
-<a href="{{ route('employee.create') }}" class="btn btn-primary mb-3">Add Employee</a>
-<br>
-@if (session()->has('message'))
-    <div class="alert alert-success">
-        {{ session('message') }}
-    </div>
     <br>
-@endif
 
+    <a href="{{ route('employee.create') }}" class="btn btn-primary mb-3">
+        Add Employee
+    </a>
+
+    <!-- Per Page -->
+<div class="row mb-2">
+
+    <!-- Search -->
+    <div class="col-md-3">
+        <input 
+            type="text" 
+            wire:model.live="search" 
+            class="form-control" 
+            placeholder="Search..."
+        >
+    </div>
+
+    <!-- Department Filter -->
+    <div class="col-md-3">
+        <select wire:model.live="departmentFilter" class="form-control">
+            <option value="">All Departments</option>
+            @foreach($departments as $dept)
+                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <!-- Designation Filter -->
+    <div class="col-md-3">
+        <select wire:model.live="designationFilter" class="form-control">
+            <option value="">All Designations</option>
+            @foreach($designations as $des)
+                <option value="{{ $des->id }}">{{ $des->name }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <!-- Per Page -->
+    <div class="col-md-3">
+        <select wire:model.live="perPage" class="form-control">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+
+</div>
+
+    <!-- Table -->
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
+ 
+                <th wire:click="sortBy('id')" style="cursor:pointer;">
+                    # @include('sort-icon', ['field' => 'id'])
+                </th>
+
+                <th wire:click="sortBy('name')" style="cursor:pointer;">
+                    Name @include('sort-icon', ['field' => 'name'])
+                </th>
+
+                <th wire:click="sortBy('email')" style="cursor:pointer;">
+                    Email @include('sort-icon', ['field' => 'email'])
+                </th>
+
+                <th wire:click="sortBy('phone')" style="cursor:pointer;">
+                    Phone @include('sort-icon', ['field' => 'phone'])
+                </th>
+                <th>Department</th>
+                <th>Designation</th>
                 <th>Action</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach($employees as $employee)
-            <tr>
+            @forelse($employees as $employee)
+            <tr wire:key="employee-{{ $employee->id }}">
+                <td>{{ $employee->id }}</td>
                 <td>{{ $employee->name }}</td>
                 <td>{{ $employee->phone }}</td>
                 <td>{{ $employee->email }}</td>
+                <td>{{ $employee->department->name ?? '-' }}</td>
+                <td>{{ $employee->designation->name ?? '-' }}</td>
                 <td>
-                    <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-sm btn-warning">Edit</a>
-               
+                    <a href="{{ route('employee.edit', $employee->id) }}" 
+                       class="btn btn-sm btn-warning">Edit</a>
+
                     <button 
-                        wire:click="delete({{ $employee->id }})" 
-                        onclick="confirm('Are you sure you want to delete this employee?') || event.stopImmediatePropagation()"
+                        wire:click="delete({{ $employee->id }})"
+                        onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
                         class="btn btn-danger btn-sm">
                         Delete
                     </button>
                 </td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="7" class="text-center">No employees found.</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
+
+    <!-- Pagination -->
+    <div>
+        {{ $employees->links() }}
+    </div>
+
 </div>
-
-
- 

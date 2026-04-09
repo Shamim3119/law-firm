@@ -536,6 +536,10 @@
       );
       sales_chart.render();
     </script>
+
+
+  {!! MyHelper::get_toast_global() !!}
+
     <!--end::Script-->
   </body>
   <!--end::Body-->
