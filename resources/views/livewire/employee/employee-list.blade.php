@@ -1,5 +1,15 @@
 <div>
+@php
+    $flag = 'false';
+@endphp
 
+@if(request()->has('flag'))
+    @if(request('flag') == 'true')
+            $flag = 'true';
+        @endif
+@endif
+
+@if($flag == 'true')
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link {{ $activeTab == 'employees' ? 'active' : '' }}" 
@@ -14,6 +24,7 @@
     <a href="{{ route('employee.create') }}" class="btn btn-primary mb-3">
         Add Employee
     </a>
+@endif
 
     <!-- Per Page -->
 <div class="row mb-2">
@@ -97,15 +108,23 @@
                 <td>{{ $employee->department->name ?? '-' }}</td>
                 <td>{{ $employee->designation->name ?? '-' }}</td>
                 <td>
-                    <a href="{{ route('employee.edit', $employee->id) }}" 
-                       class="btn btn-sm btn-warning">Edit</a>
+                    @if($flag == 'true')
+                        <a href="{{ route('employee.edit', $employee->id) }}" 
+                        class="btn btn-sm btn-warning">Edit</a>
 
-                    <button 
-                        wire:click="delete({{ $employee->id }})"
-                        onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-                        class="btn btn-danger btn-sm">
-                        Delete
-                    </button>
+                        <button 
+                            wire:click="delete({{ $employee->id }})"
+                            onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
+                            class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
+                    @else
+                        <button 
+                            wire:click="$dispatch('EmployeeSelected', { data: { id: {{ $employee->id }}, name: '{{ $employee->name }}' } })"
+                            class="btn btn-sm btn-warning">
+                            Add
+                        </button>
+                    @endif
                 </td>
             </tr>
             @empty
@@ -115,10 +134,26 @@
             @endforelse
         </tbody>
     </table>
-
     <!-- Pagination -->
     <div>
         {{ $employees->links() }}
     </div>
 
+    <script>
+    window.addEventListener('EmployeeSelected', () => {
+        let modalEl = document.getElementById('ModalLive');
+        let modal = bootstrap.Modal.getInstance(modalEl);
+
+        if (modal) {
+            modal.hide();
+        }
+
+        // 👇 IMPORTANT: cleanup leftover backdrop
+        setTimeout(() => {
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('padding-right');
+        }, 300);
+    });
+</script>
 </div>

@@ -1,41 +1,53 @@
 <div> <!-- single root -->
 
+@php
+    $flag = 'false';
+@endphp
+
+@if(request()->has('flag'))
+    @if(request('flag') == 'true')
+            $flag = 'true';
+        @endif
+@endif
+
+@if($flag == 'true')
+        <ul class="nav nav-tabs">
+
+        <li class="nav-item">
+            <a 
+            class="nav-link {{ $activeTab == 'clients' ? 'active' : '' }}" 
+            href="{{ route('client.index', ['tab' => 'clients', 'flag' => 'true']) }}" 
+            >
+            Clients
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a 
+            class="nav-link {{ $activeTab == 'appointments' ? 'active' : '' }}" 
+            href="{{ route('appointment.index', ['tab' => 'appointments']) }}"
+            >
+            Appointments
+            </a>
+        </li>
+
+            <li class="nav-item">
+            <a 
+            class="nav-link {{ $activeTab == 'cases' ? 'active' : '' }}" 
+            href="{{ route('cases.index', ['tab' => 'cases']) }}"
+        >
+            Cases
+            </a>
+        </li>
+
+        </ul>
+        <br>  
+        <a href="{{ route('client.create') }}" class="btn btn-primary mb-3">Add Client</a>
+        <br>
+@endif
 
 
-<ul class="nav nav-tabs">
 
-  <li class="nav-item">
-    <a 
-      class="nav-link {{ $activeTab == 'clients' ? 'active' : '' }}" 
-      href="{{ route('client.index', ['tab' => 'clients']) }}" 
-       >
-      Clients
-    </a>
-  </li>
-
-  <li class="nav-item">
-    <a 
-      class="nav-link {{ $activeTab == 'appointments' ? 'active' : '' }}" 
-      href="{{ route('appointment.index', ['tab' => 'appointments']) }}"
-      >
-      Appointments
-    </a>
-  </li>
-
-    <li class="nav-item">
-    <a 
-      class="nav-link {{ $activeTab == 'cases' ? 'active' : '' }}" 
-      href="{{ route('cases.index', ['tab' => 'cases']) }}"
- >
-      Cases
-    </a>
-  </li>
-
-</ul>
-<br>  
-
-<a href="{{ route('client.create') }}" class="btn btn-primary mb-3">Add Client</a>
-<br>
 
 <div class="row mb-3">
 
@@ -100,20 +112,27 @@
       <tbody>
           @forelse($clients as $client)
           <tr wire:key="client-{{ $client->id }}">
-              <td>{{ $client->id }}</td>
-              <td>{{ $client->name }}</td>
-              <td>{{ $client->phone }}</td>
-              <td>{{ $client->email }}</td>
-              <td>
-                  <a href="{{ route('client.edit', $client->id) }}" class="btn btn-sm btn-warning">Edit</a>
-
-                  <button 
-                      wire:click="delete({{ $client->id }})"
-                      onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-                      class="btn btn-danger btn-sm">
-                      Delete
-                  </button>
-              </td>
+                <td>{{ $client->id }}</td>
+                <td>{{ $client->name }}</td>
+                <td>{{ $client->phone }}</td>
+                <td>{{ $client->email }}</td>
+                <td>
+              @if($flag == 'true')
+                    <a href="{{ route('client.edit', $client->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <button 
+                        wire:click="delete({{ $client->id }})"
+                        onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
+                        class="btn btn-danger btn-sm">
+                        Delete
+                    </button>
+                @else
+                    <button 
+                        wire:click="$dispatch('clientSelected', { data: { id: {{ $client->id }}, name: '{{ $client->name }}' } })"
+                        class="btn btn-sm btn-warning">
+                        Add
+                    </button>
+                @endif
+                </td>
           </tr>
           @empty
           <tr>
@@ -124,11 +143,29 @@
     </table>
 
 
+
     <!-- Right: Pagination buttons -->
     <div>
         {{ $clients->links() }}
     </div>
 
+<script>
+    window.addEventListener('clientSelected', () => {
+        let modalEl = document.getElementById('ModalLive');
+        let modal = bootstrap.Modal.getInstance(modalEl);
+
+        if (modal) {
+            modal.hide();
+        }
+
+        // 👇 IMPORTANT: cleanup leftover backdrop
+        setTimeout(() => {
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('padding-right');
+        }, 300);
+    });
+</script>
  
 </div>
 

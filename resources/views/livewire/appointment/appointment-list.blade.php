@@ -44,6 +44,12 @@
             <tr>
                 <th>Titel</th>
                 <th>Descriptions</th>
+                <th>Lawyer</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -52,6 +58,17 @@
             <tr>
                 <td>{{ $appointment->title }}</td>
                 <td>{{ $appointment->descriptions }}</td>
+                <td>{{ $appointment->employee->name ?? '' }}</td>
+                <td>{{ $appointment->client->name ?? '' }}</td>
+                <td>{{ $appointment->appointment_date }}</td>
+                <td>{{ $appointment->appointment_start_time }}</td>
+                <td>{{ $appointment->appointment_end_time }}</td>
+                <!--
+                <td>{{ $appointment->status->name }}</td>
+-->
+                <td>{!! MyHelper::get_status_button('{{ $appointment->status->id }}', '{{ $appointment->status->name }}') !!}</td>
+
+
                 <td>
                     <a href="{{ route('appointment.edit', $appointment->id) }}" class="btn btn-sm btn-warning">Edit</a>
                
@@ -61,12 +78,41 @@
                         class="btn btn-danger btn-sm">
                         Delete
                     </button>
- 
+
+                    <button 
+                        type="button"
+                        wire:click="$dispatch('setAppointmentId', { id: {{ $appointment->id }} })"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#ModalLive" 
+                        class="btn btn-sm btn-primary">
+                        Reappoint
+                    </button>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+
+
+
+    <div class="modal fade modal-lg" id="ModalLive" tabindex="-1" aria-labelledby="ModalLiveLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLiveLabel">Appointment Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @livewire('appointment.appointment-details-crud')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 

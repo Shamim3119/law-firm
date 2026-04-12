@@ -89,7 +89,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                      <a href="{{ route('client.index', ['tab' => 'clients']) }}" class="nav-link {{ request('tab') == 'clients' ? 'active' : '' }}">
+                      <a href="{{ route('client.index', ['tab' => 'clients', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'clients' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Clients</p>
                       </a>

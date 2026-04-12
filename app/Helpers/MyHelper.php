@@ -57,4 +57,27 @@ class MyHelper
             </div>
         </div>";
     }
+app\      
+    public static function get_status_button($id, $name)
+    {
+        switch($id)
+        {
+            case 1:
+                    return '<button type="button" class="btn btn-sm btn-primary">$name</button>';
+                break;
+            case 2:
+                    return '<button type="button" class="btn btn-sm btn-warning">$name</button>';
+                break;
+            case 3:
+                return '<button type="button" class="btn btn-sm btn-info">$name</button>';
+                break;
+            case 4:
+                return '<button type="button" class="btn btn-sm btn-danger">$name</button>';
+                break;
+            case 5:
+                return '<button type="button" class="btn btn-sm btn-success">$name</button>';
+                break;
+        }
+    }
+
 }
