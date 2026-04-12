@@ -3,6 +3,7 @@
  
 namespace App\Helpers;
 
+
 class MyHelper
 {
     public static function get_toast_dispatch()
@@ -57,7 +58,7 @@ class MyHelper
             </div>
         </div>";
     }
-app\      
+ 
     public static function get_status_button($id, $name)
     {
         switch($id)
