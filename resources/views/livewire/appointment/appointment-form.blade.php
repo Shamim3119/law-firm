@@ -89,7 +89,7 @@
 
 
         <button type="submit" class="btn btn-success">{{ $appointment_id ? 'Update' : 'Create' }}</button>
-        <a href="{{ route('appointment.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('appointment.index', ['tab' => 'appointments', 'flag' => 'true']) }}" class="btn btn-secondary">Back</a>
     </form>
  
 

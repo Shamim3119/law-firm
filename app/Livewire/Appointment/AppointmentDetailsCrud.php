@@ -3,6 +3,7 @@
 namespace App\Livewire\Appointment;
 
 use Livewire\Component;
+use App\Models\Appointment;
 use App\Models\AppointmentDetails;
 use Livewire\Attributes\On;
 
@@ -15,8 +16,6 @@ class AppointmentDetailsCrud extends Component
     public $appointment_end_time;
     public $appointment_details;
     public $updateMode = false;
-
- 
     public $selectedAppointmentId;
 
 
@@ -25,7 +24,7 @@ class AppointmentDetailsCrud extends Component
     {
         $this->appointment_id = $id;
 
-        $this->resetInputFields(); // clear form when switching
+        $this->resetInputFields();  
     }
 
     public function render()
@@ -33,7 +32,9 @@ class AppointmentDetailsCrud extends Component
         $appointments = [];
 
         if ($this->appointment_id) {
-            $appointments = AppointmentDetails::where('appointment_id', $this->appointment_id)->get();
+            $appointments = AppointmentDetails::where('appointment_id', $this->appointment_id)
+                ->orderBy('id', 'desc')  
+                ->get();
         }
 
         return view('livewire.appointment.appointment-details-crud', [
@@ -58,21 +59,31 @@ class AppointmentDetailsCrud extends Component
             'appointment_details' => 'required|string',
         ]);
 
+        $appointments = Appointment::findOrFail($this->appointment_id);
+
+        $appointments->update([
+ 
+            'appointment_details' => $this->appointment_details,
+            'appointment_date' => $this->appointment_date,
+            'appointment_start_time' => $this->appointment_start_time,
+            'appointment_end_time' => $this->appointment_end_time,
+            'status_id' => '2',
+        ]);
 
         if ($this->appointment_details_id) {
             $appointment = AppointmentDetails::find($this->appointment_details_id);
 
             if ($appointment) {
                 $appointment->update($validatedData);
-                session()->flash('message', 'Updated Successfully.');
+                $this->dispatch('show-toast', message: 'Updated Successfully.');
+         
             }
         } else {
             $validatedData['appointment_id'] = $this->appointment_id;
             AppointmentDetails::create($validatedData);
-            session()->flash('message', 'Created Successfully.');
+            $this->dispatch('show-toast', message: 'Created Successfully.');
+  
         }
-
-        $this->dispatch('show-toast', message: session('message'));
 
         $this->resetInputFields();
         $this->updateMode = false;

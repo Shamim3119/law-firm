@@ -54,8 +54,9 @@ class Appointment extends Model
                             'appointment_start_time', 
                             'appointment_end_time', 
                             'appointment_details', 
-                            'appointment_code',
+                            'code',
                             'status_id',
+                            'note',
                             ]; 
 
     public function employee()

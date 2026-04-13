@@ -33,7 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Employee extends Model
 {
-    protected $fillable = ['name', 'phone', 'email', 'department_id', 'designation_id']; 
+    protected $fillable = ['name', 'phone', 'email', 'department_id', 'designation_id', 'code']; 
 
     public function department()
     {

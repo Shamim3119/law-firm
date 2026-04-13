@@ -9,6 +9,16 @@ class CasesList extends Component
     public $cases;
     public $activeTab = 'clients';
 
+
+
+    // 🔥 Refresh after status update
+    #[On('refreshCases')]
+    public function refreshCases()
+    {
+        $this->cases = \App\Models\Cases::all();
+    }
+
+ 
     public function mount()
     {
         if (request()->has('tab')) {

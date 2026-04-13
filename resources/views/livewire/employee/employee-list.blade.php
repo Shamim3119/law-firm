@@ -1,13 +1,6 @@
 <div>
-@php
-    $flag = 'false';
-@endphp
 
-@if(request()->has('flag'))
-    @if(request('flag') == 'true')
-            $flag = 'true';
-        @endif
-@endif
+ 
 
 @if($flag == 'true')
     <ul class="nav nav-tabs">
@@ -76,15 +69,17 @@
     <table class="table table-bordered">
         <thead>
             <tr>
- 
-                <th wire:click="sortBy('id')" style="cursor:pointer;">
-                    # @include('sort-icon', ['field' => 'id'])
+                <th>
+                  SL
+              </th>
+                <th wire:click="sortBy('code')" style="cursor:pointer;">
+                    ID @include('sort-icon', ['field' => 'code'])
                 </th>
 
                 <th wire:click="sortBy('name')" style="cursor:pointer;">
                     Name @include('sort-icon', ['field' => 'name'])
                 </th>
-
+            @if($flag == 'true')
                 <th wire:click="sortBy('email')" style="cursor:pointer;">
                     Email @include('sort-icon', ['field' => 'email'])
                 </th>
@@ -92,22 +87,26 @@
                 <th wire:click="sortBy('phone')" style="cursor:pointer;">
                     Phone @include('sort-icon', ['field' => 'phone'])
                 </th>
+            @endif
                 <th>Department</th>
                 <th>Designation</th>
-                <th>Action</th>
+                <th style='text-align:center;'>Action</th>
             </tr>
         </thead>
 
         <tbody>
             @forelse($employees as $employee)
             <tr wire:key="employee-{{ $employee->id }}">
-                <td>{{ $employee->id }}</td>
+                <td>{{ $loop->iteration  }}</td>
+                <td>{{ $employee->code }}</td>
                 <td>{{ $employee->name }}</td>
+            @if($flag == 'true')
                 <td>{{ $employee->phone }}</td>
                 <td>{{ $employee->email }}</td>
+            @endif
                 <td>{{ $employee->department->name ?? '-' }}</td>
                 <td>{{ $employee->designation->name ?? '-' }}</td>
-                <td>
+                <td align='center'>
                     @if($flag == 'true')
                         <a href="{{ route('employee.edit', $employee->id) }}" 
                         class="btn btn-sm btn-warning">Edit</a>

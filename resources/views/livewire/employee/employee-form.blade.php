@@ -44,7 +44,7 @@
  
         
         <button type="submit" class="btn btn-success">{{ $employee_id ? 'Update' : 'Create' }}</button>
-        <a href="{{ route('employee.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('employee.index',['tab' => 'employees', 'flag' => 'true']) }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
 

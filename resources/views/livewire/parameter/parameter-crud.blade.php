@@ -24,6 +24,12 @@
            Appointment Type
         </a>
     </li>
+        <li class="nav-item">
+        <a href="{{ route('parameter.index', ['tab' => 'gender']) }}" 
+           class="nav-link {{ $activeTab == 'gender' ? 'active' : '' }}">
+           Gender
+        </a>
+    </li>
 </ul>
 
 <br> 
@@ -50,6 +56,7 @@
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
+                <th style='width:2%'>SL</th>
                 <th>Name</th>
                 <th style="text-align: center; width: 150px;">Action</th>
             </tr>
@@ -57,6 +64,7 @@
         <tbody>
             @foreach($parameters as $parameter)
                 <tr wire:key="param-{{ $parameter->id }}">
+                    <td>{{ $loop->iteration  }}</td>
                     <td>{{ $parameter->name }}</td>
                     <td style="text-align: center">
                         <button wire:click="edit({{ $parameter->id }})" class="btn btn-primary btn-sm">Edit</button>

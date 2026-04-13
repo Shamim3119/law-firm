@@ -1,15 +1,6 @@
 <div> <!-- single root -->
 
-@php
-    $flag = 'false';
-@endphp
-
-@if(request()->has('flag'))
-    @if(request('flag') == 'true')
-            $flag = 'true';
-        @endif
-@endif
-
+ 
 @if($flag == 'true')
         <ul class="nav nav-tabs">
 
@@ -25,7 +16,7 @@
         <li class="nav-item">
             <a 
             class="nav-link {{ $activeTab == 'appointments' ? 'active' : '' }}" 
-            href="{{ route('appointment.index', ['tab' => 'appointments']) }}"
+            href="{{ route('appointment.index', ['tab' => 'appointments', 'flag' => 'true']) }}"
             >
             Appointments
             </a>
@@ -34,7 +25,7 @@
             <li class="nav-item">
             <a 
             class="nav-link {{ $activeTab == 'cases' ? 'active' : '' }}" 
-            href="{{ route('cases.index', ['tab' => 'cases']) }}"
+            href="{{ route('cases.index', ['tab' => 'cases', 'flag' => 'true']) }}"
         >
             Cases
             </a>
@@ -57,12 +48,12 @@
             type="text"
             wire:model.live="search"
             class="form-control"
-            placeholder="Search name, email, phone..."
+            placeholder="Search id, name, email, phone..."
         >
     </div>
 
     <!-- 📄 Per Page -->
-    <div class="col-md-2">
+    <div class="col-md-1">
         <select wire:model.live="perPage" class="form-control">
             <option value="10">10</option>
             <option value="20">20</option>
@@ -79,9 +70,12 @@
     <table class="table table-bordered">
       <thead>
           <tr>
-              <th wire:click="sortBy('id')" style="cursor:pointer;">
+              <th>
+                  SL
+              </th>
+              <th wire:click="sortBy('code')" style="cursor:pointer;">
                   ID
-                  @if ($sortField === 'id')
+                  @if ($sortField === 'code')
                       @if ($sortDirection === 'asc') ↑ @else ↓ @endif
                   @endif
               </th>
@@ -106,17 +100,19 @@
                   @endif
               </th>
 
-              <th>Action</th>
+              <th style='text-align:center;'>Action</th>
           </tr>
       </thead>
       <tbody>
           @forelse($clients as $client)
           <tr wire:key="client-{{ $client->id }}">
-                <td>{{ $client->id }}</td>
+ 
+                <td>{{ $loop->iteration  }}</td>
+                <td>{{ $client->code }}</td>
                 <td>{{ $client->name }}</td>
                 <td>{{ $client->phone }}</td>
                 <td>{{ $client->email }}</td>
-                <td>
+                <td align='center'>
               @if($flag == 'true')
                     <a href="{{ route('client.edit', $client->id) }}" class="btn btn-sm btn-warning">Edit</a>
                     <button 

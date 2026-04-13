@@ -3,7 +3,6 @@
  
 namespace App\Helpers;
 
-
 class MyHelper
 {
     public static function get_toast_dispatch()
@@ -59,25 +58,30 @@ class MyHelper
         </div>";
     }
  
-    public static function get_status_button($id, $name)
+    public static function get_status_button($id, $appointment_id, $name)
     {
+        $click = "window.dispatchEvent(new CustomEvent('setAppointmentStatusId', { detail: { id: {$appointment_id} } }))";
+
         switch($id)
         {
             case 1:
-                    return '<button type="button" class="btn btn-sm btn-primary">$name</button>';
-                break;
+                return "<button type='button'
+                    onclick=\"{$click}\"
+                    data-bs-toggle='modal' data-bs-target='#ModalStatus'
+                    class='btn btn-sm btn-primary'>{$name}</button>";
             case 2:
-                    return '<button type="button" class="btn btn-sm btn-warning">$name</button>';
-                break;
+                return "<button type='button'
+                    onclick=\"{$click}\"
+                    data-bs-toggle='modal' data-bs-target='#ModalStatus'
+                    class='btn btn-sm btn-warning'>{$name}</button>";
             case 3:
-                return '<button type="button" class="btn btn-sm btn-info">$name</button>';
-                break;
+                return "<button type='button' disabled class='btn btn-sm btn-info'>{$name}</button>";
+
             case 4:
-                return '<button type="button" class="btn btn-sm btn-danger">$name</button>';
-                break;
+                return "<button type='button' disabled class='btn btn-sm btn-danger'>{$name}</button>";
+
             case 5:
-                return '<button type="button" class="btn btn-sm btn-success">$name</button>';
-                break;
+                return "<button type='button' disabled class='btn btn-sm btn-success'>{$name}</button>";
         }
     }
 

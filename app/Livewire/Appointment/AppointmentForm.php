@@ -54,76 +54,76 @@ class AppointmentForm extends Component
             $this->appointment_details = $appointment->appointment_details;
             $this->appointment_date = $appointment->appointment_date;
             $this->appointment_start_time = $appointment->appointment_start_time;
-            $this->appointment_end_time = $appointment->appointment_end_time;   
+            $this->appointment_end_time = $appointment->appointment_end_time;  
+             
             $this->employee = $appointment->employee->name ?? '';
-            $this->client = $appointment->client->name ?? '';
-            
             $this->employee_id = $appointment->employee_id;
+
             $this->client_id = $appointment->client_id;
+            $this->client = $appointment->client->name ?? '';
 
         }
     }
 
 
-public function save()
-{
-    $this->validate([
-        'title' => 'required',
-        'descriptions' => 'required',
-        'employee_id' => 'required',
-        'client_id' => 'required',
-    ]);
-
-    if ($this->appointment_id) {
-        // UPDATE
-        $appointment = Appointment::findOrFail($this->appointment_id);
-
-        $appointment->update([
-            'title' => $this->title,
-            'descriptions' => $this->descriptions,
-            'employee_id' => $this->employee_id,
-            'client_id' => $this->client_id,
-            'appointment_type_id' => $this->appointment_type_id,
-            'appointment_details' => $this->appointment_details,
-            'appointment_date' => $this->appointment_date,
-            'appointment_start_time' => $this->appointment_start_time,
-            'appointment_end_time' => $this->appointment_end_time,
+    public function save()
+    {
+        $this->validate([
+            'title' => 'required',
+            'descriptions' => 'required',
+            'employee_id' => 'required',
+            'client_id' => 'required',
         ]);
 
-    } else {
-        // INSERT
-        $appointmentCode = DB::select("SELECT fnc_get_appoinment_code() as code")[0]->code;
+        if ($this->appointment_id) {
+            // UPDATE
+            $appointment = Appointment::findOrFail($this->appointment_id);
 
-        $appointment = Appointment::create([
-            'title' => $this->title,
-            'descriptions' => $this->descriptions,
-            'employee_id' => $this->employee_id,
-            'client_id' => $this->client_id,
-            'appointment_type_id' => $this->appointment_type_id,
-            'appointment_details' => $this->appointment_details,
-            'appointment_date' => $this->appointment_date,
-            'appointment_start_time' => $this->appointment_start_time,
-            'appointment_end_time' => $this->appointment_end_time,
-            'appointment_code' => $appointmentCode,
-        ]);
+            $appointment->update([
+                'title' => $this->title,
+                'descriptions' => $this->descriptions,
+                'employee_id' => $this->employee_id,
+                'client_id' => $this->client_id,
+                'appointment_type_id' => $this->appointment_type_id,
+                'appointment_details' => $this->appointment_details,
+                'appointment_date' => $this->appointment_date,
+                'appointment_start_time' => $this->appointment_start_time,
+                'appointment_end_time' => $this->appointment_end_time,
+            ]);
+
+        } else {
+            // INSERT
+            $appointmentCode = DB::select("SELECT fnc_get_code(2) as code")[0]->code;
+
+            $appointment = Appointment::create([
+                'title' => $this->title,
+                'descriptions' => $this->descriptions,
+                'employee_id' => $this->employee_id,
+                'client_id' => $this->client_id,
+                'appointment_type_id' => $this->appointment_type_id,
+                'appointment_details' => $this->appointment_details,
+                'appointment_date' => $this->appointment_date,
+                'appointment_start_time' => $this->appointment_start_time,
+                'appointment_end_time' => $this->appointment_end_time,
+                'code' => $appointmentCode,
+            ]);
+        }
+
+        AppointmentDetails::updateOrCreate(
+            ['appointment_id' => $appointment->id],
+            [
+                'appointment_date' => $this->appointment_date,
+                'appointment_start_time' => $this->appointment_start_time,
+                'appointment_end_time' => $this->appointment_end_time,
+                'appointment_details' => $this->appointment_details,
+            ]
+        );
+
+        session()->flash('message', $this->appointment_id ? 'Appointment Updated Successfully' : 'Appointment Created Successfully');
+
+        return redirect()->route('appointment.index', ['tab' => 'appointments', 'flag' => 'true']);
     }
 
-    AppointmentDetails::updateOrCreate(
-        ['appointment_id' => $appointment->id],
-        [
-            'appointment_date' => $this->appointment_date,
-            'appointment_start_time' => $this->appointment_start_time,
-            'appointment_end_time' => $this->appointment_end_time,
-            'appointment_details' => $this->appointment_details,
-        ]
-    );
-
-    session()->flash('message', $this->appointment_id ? 'Appointment Updated Successfully' : 'Appointment Created Successfully');
-
-    return redirect()->route('appointment.index', ['tab' => 'appointments']);
-}
-
-    
     public function render()
     {
         return view('livewire.appointment.appointment-form')->layout('layouts.app', [

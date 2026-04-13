@@ -4,7 +4,9 @@
 namespace App\Livewire\Client;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 
 class ClientForm extends Component
 {
@@ -29,6 +31,7 @@ class ClientForm extends Component
             'email' => 'required|email',
         ]);
 
+        /*
         Client::updateOrCreate(
             ['id' => $this->client_id],
             [
@@ -37,10 +40,29 @@ class ClientForm extends Component
                 'email' => $this->email,
             ]
         );
+        */
+
+        if ($this->client_id) {
+            $client = Client::findOrFail($this->client_id);
+            $client->update([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+            ]);
+        }else{
+            
+            $appointmentCode = DB::select("SELECT fnc_get_code(1) as code")[0]->code;
+            $client = Client::create([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'code' => $appointmentCode,
+            ]);
+        }
 
         session()->flash('message', $this->client_id ? 'Client Updated Successfully' : 'Client Created Successfully');
 
-        return redirect()->route('client.index', ['tab' => 'clients']);
+        return redirect()->route('client.index', ['tab' => 'clients', 'flag' => 'true']);
     }
 
     public function render()

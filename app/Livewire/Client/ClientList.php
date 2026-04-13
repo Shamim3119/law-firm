@@ -16,10 +16,11 @@ class ClientList extends Component
 
     public $perPage = 10;
     public $search = '';
-
+    public $page = 1;
     public $sortField = 'id';
-    public $sortDirection = 'asc';
-
+    public $sortDirection = 'desc';
+    public $flag = 'false';
+ 
     // Keep state in URL
     protected $queryString = [
         'search' => ['except' => ''],
@@ -32,6 +33,7 @@ class ClientList extends Component
         if (request()->has('tab')) {
             $this->activeTab = request('tab');
         }
+        $this->flag = request()->get('flag', 'false');
     }
 
     // Reset page when search or perPage changes
@@ -72,6 +74,7 @@ class ClientList extends Component
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
                       ->orWhere('email', 'like', '%' . $this->search . '%')
+                      ->orWhere('code', 'like', '%' . $this->search . '%')
                       ->orWhere('phone', 'like', '%' . $this->search . '%');
             })
             ->orderBy($this->sortField, $this->sortDirection)

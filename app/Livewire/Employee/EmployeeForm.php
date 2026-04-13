@@ -3,8 +3,10 @@
 namespace App\Livewire\Employee;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 use App\Models\Employee;
 use App\Models\Parameter;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeForm extends Component
 {
@@ -40,7 +42,7 @@ class EmployeeForm extends Component
             'department_id' => 'required|integer',
             'designation_id' => 'required|integer',
         ]);
-
+/*
         Employee::updateOrCreate(
             ['id' => $this->employee_id],
             [
@@ -51,13 +53,36 @@ class EmployeeForm extends Component
                 'designation_id' => $this->designation_id,
             ]
         );
+*/
+        
+        if ($this->employee_id) {
+            $employee = Employee::findOrFail($this->employee_id);
+            $employee->update([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'department_id' => $this->department_id,
+                'designation_id' => $this->designation_id,
+            ]);
+        }else{
+            
+            $empcode = DB::select("SELECT fnc_get_code(0) as code")[0]->code;
+
+            $employee = Employee::create([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'department_id' => $this->department_id,
+                'designation_id' => $this->designation_id,
+                'code' => $empcode,
+            ]);
+        }
 
         session()->flash('message', $this->employee_id ? 'Employee Updated Successfully' : 'Employee Created Successfully');
         
-        
        // $this->dispatch('show-toast', message: session('message'));
 
-        return redirect()->route('employee.index');
+        return redirect()->route('employee.index', ['tab' => 'employees', 'flag' => 'true']);
     }
 
     public function render()

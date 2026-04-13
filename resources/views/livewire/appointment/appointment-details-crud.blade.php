@@ -74,15 +74,25 @@
     </table>
 
 <script>
+ 
+    const modal = document.getElementById('ModalLive');
+
+    modal.addEventListener('hidden.bs.modal', function () {
+        Livewire.dispatch('refreshAppointments');
+    });
+ 
     flatpickr("#date", {
         dateFormat: "Y-m-d"
     });
  
-flatpickr("#datetime", {
-    enableTime: true,
-    dateFormat: "Y-m-d H:i",
-    time_24hr: true
-});
+    flatpickr("#datetime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        time_24hr: true
+    });
+
+
+
 </script>
  
 

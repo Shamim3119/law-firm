@@ -16,9 +16,10 @@ class EmployeeList extends Component
     public $activeTab = 'employees';
     public $perPage = 10;
     public $search = ''; // ✅ NEW
-
+    public $page = 1;
     public $departmentFilter = '';
     public $designationFilter = '';
+    public $flag = 'false';
 
     // ✅ Persist in URL
     protected $queryString = [
@@ -56,6 +57,7 @@ class EmployeeList extends Component
         if (request()->has('tab')) {
             $this->activeTab = request('tab');
         }
+        $this->flag = request()->get('flag', 'false');
     }
 
     public function delete($id)
@@ -88,6 +90,7 @@ class EmployeeList extends Component
             $query->where(function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%')
+                ->orWhere('code', 'like', '%' . $this->search . '%')
                 ->orWhereHas('department', function ($q2) {
                     $q2->where('name', 'like', '%' . $this->search . '%');
                 })

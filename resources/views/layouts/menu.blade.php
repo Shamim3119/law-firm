@@ -54,6 +54,14 @@
                     </a>
                 </li>
 
+
+                <li class="nav-item">
+                    <a href="{{ route('parameter.index', ['tab' => 'gender']) }}" class="nav-link {{ request('tab') == 'gender' ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Gender</p>
+                    </a>
+                </li>
+
                 </ul>
               </li>
 
@@ -68,7 +76,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('employee.index') }}" class="nav-link active">
+                    <a href="{{ route('employee.index', ['tab' => 'employees', 'flag' => 'true']) }}" class="nav-link active">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Employee Info</p>
                     </a>
@@ -96,14 +104,14 @@
                   </li>
 
                   <li class="nav-item">
-                      <a href="{{ route('appointment.index', ['tab' => 'appointments']) }}" class="nav-link {{ request('tab') == 'appointments' ? 'active' : '' }}">
+                      <a href="{{ route('appointment.index', ['tab' => 'appointments', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'appointments' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Appointments</p>
                       </a>
                   </li>
 
                   <li class="nav-item">
-                      <a href="{{ route('cases.index', ['tab' => 'cases']) }}" class="nav-link {{ request('tab') == 'cases' ? 'active' : '' }}">
+                      <a href="{{ route('cases.index', ['tab' => 'cases', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'cases' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Cases</p>
                       </a>

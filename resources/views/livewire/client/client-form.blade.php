@@ -21,6 +21,6 @@
         </div>
 
         <button type="submit" class="btn btn-success">{{ $client_id ? 'Update' : 'Create' }}</button>
-        <a href="{{ route('client.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('client.index',['tab' => 'clients', 'flag' => 'true']) }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
