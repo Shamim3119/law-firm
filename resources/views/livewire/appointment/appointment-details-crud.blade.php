@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-6">
                     <label>Appointment Date</label>
-                    <input type="text" id="date" class="form-control" placeholder="Select date" wire:model="appointment_date">
+                    <input type="text" id="date" class="form-control datepicker" placeholder="Select date" wire:model="appointment_date">
                     @error('appointment_date') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-3">

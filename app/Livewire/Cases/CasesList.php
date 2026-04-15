@@ -3,24 +3,45 @@
 namespace App\Livewire\Cases;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
+use App\Models\Cases;
 
 class CasesList extends Component
 {
     public $cases;
     public $activeTab = 'clients';
 
-
-
-    // 🔥 Refresh after status update
     #[On('refreshCases')]
     public function refreshCases()
     {
-        $this->cases = \App\Models\Cases::all();
+        $this->cases = Cases::all();
     }
 
- 
+
+    public $modalType;
+    public $selectedCaseId;
+    public $modalTitle;
+
+    public function openModal($type, $caseId)
+    {
+        $this->modalType = $type;
+        $this->selectedCaseId = $caseId;
+
+        if ($type == 'payment') {
+            $this->modalTitle = 'Payment Details';
+        } elseif ($type == 'court') {
+            $this->modalTitle = 'Court Details';
+        } else {
+            $this->modalTitle = 'Hearing Details';
+        }
+
+        $this->dispatch('setCaseId', id: $caseId);
+    }
+
     public function mount()
     {
+        $this->cases = Cases::all();
+
         if (request()->has('tab')) {
             $this->activeTab = request('tab');
         }
@@ -31,28 +52,21 @@ class CasesList extends Component
         $this->activeTab = $tab;
     }
 
+    public function delete($id)
+    {
+        Cases::findOrFail($id)->delete();
+
+        // refresh after delete
+        $this->cases = Cases::all();
+
+        session()->flash('message', 'Cases Deleted Successfully.');
+    }
+
     public function render()
     {
-        $this->cases = \App\Models\Cases::all();
-
         return view('livewire.cases.cases-list')->layout('layouts.app', [
             'title' => 'Cases',
             'sub_title' => 'Cases List'
         ]);
     }
-
-    public function delete($id)
-    {
-        \App\Models\Cases::findOrFail($id)->delete();
-
-        session()->flash('message', 'Cases Deleted Successfully.');
-    }
-    
- 
 }
-
-
-
-   
-
-

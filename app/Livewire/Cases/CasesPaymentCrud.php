@@ -10,45 +10,49 @@ use Illuminate\Support\Facades\DB;
 
 class CasesPaymentCrud extends Component
 {
-
     public $case_id;
     public $type_id, $amount, $remarks;
- 
+
     #[On('setCaseId')]
     public function setCaseId($id)
     {
         $this->case_id = $id;
-        $this->resetInputFields();  
+        $this->resetInputFields();
     }
 
     private function resetInputFields()
     {
-        $this->type_id =  0;
+        $this->type_id = 0;
         $this->amount = '';
         $this->remarks = '';
     }
 
     public function save()
     {
-        $validatedData = $this->validate([
+        $this->validate([
             'type_id' => 'required|integer',
             'amount' => ['nullable', 'numeric', 'regex:/^\d{1,8}(\.\d{1,2})?$/'],
         ]);
 
-        $client_id = DB::select("select client_id from cases where id = ".$this->case_id)[0]->client_id;
-        $employee_id = DB::select("select employee_id from cases where id = ".$this->case_id)[0]->employee_id;
-        $appointment_id = DB::select("select appointment_id from cases where id = ".$this->case_id)[0]->appointment_id;
-        $due = DB::select("select due from cases where id = ".$this->case_id)[0]->due;
-        $payment = DB::select("select payment from cases where id = ".$this->case_id)[0]->payment;
+        // ✅ CLEAN QUERY (instead of multiple DB::select)
+        $case = Cases::findOrFail($this->case_id);
 
-        $newPayment = ($payment + $this->amount);
-        $newDue = ($due - $this->amount);
-        if($this->type_id == 1)
-        {
-            $newDue = ($due + $this->amount);
-            $newPayment = ($payment - $this->amount);
+        $client_id = $case->client_id;
+        $employee_id = $case->employee_id;
+        $appointment_id = $case->appointment_id;
+        $due = $case->due;
+        $payment = $case->payment;
+
+        // calculation
+        $newPayment = $payment + $this->amount;
+        $newDue = $due - $this->amount;
+
+        if ($this->type_id == 1) {
+            $newDue = $due + $this->amount;
+            $newPayment = $payment - $this->amount;
         }
 
+        // save payment history
         Payment::create([
             'type_id' => $this->type_id,
             'amount' => $this->amount,
@@ -60,24 +64,36 @@ class CasesPaymentCrud extends Component
             'active_amount' => $due,
             'next_amount' => $newDue,
         ]);
-    $this->render();
-        Cases::where('id', $this->case_id)->update([
+
+        // update case
+        $case->update([
             'payment' => $newPayment,
             'due' => $newDue,
         ]);
 
+        // 🔥 CLOSE MODAL
+       // $this->dispatch('close-modal');
 
-        $this->dispatch('refreshCases');
+        // 🔥 REFRESH PARENT (VERY IMPORTANT)
+       // $this->dispatch('refreshCases')->to(CasesList::class);
+
+        // toast
         $this->dispatch('show-toast', message: 'Payment Saved Successfully.');
 
         $this->resetInputFields();
-
- 
     }
-
 
     public function render()
     {
-        return view('livewire.cases.cases-payment-crud');
+        $payments = [];
+
+        if ($this->case_id) {
+            $payments = Payment::where('case_id', $this->case_id)
+               ->select('*', DB::raw("IF(type_id = 0, 'Add', 'Return') as type"))
+                ->orderBy('id', 'desc')  
+                ->get();
+        }
+
+        return view('livewire.cases.cases-payment-crud', ['payments' => $payments]);
     }
 }

@@ -164,9 +164,7 @@ document.addEventListener('livewire:init', () => {
 </script>
 
 
-@php
-    request('flag') === 'true';
-@endphp
+ 
  
 </div>
 

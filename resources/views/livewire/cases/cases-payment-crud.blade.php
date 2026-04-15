@@ -26,15 +26,34 @@
         <button type="submit" class="btn btn-success"> Update</button>
     </form>
 
-<script>
-    document.getElementById('ModalPayment')
-        .addEventListener('hidden.bs.modal', function () {
-            Livewire.dispatch('refreshCases');
-        });
-</script>
 
+    <!-- List -->
+    <h4 class="mt-3 text-capitalize">Appointment Details</h4>
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th style='text-align:center;width:2%;'>SL</th>
+                <th style='text-align:center'>Type</th>
+                <th style='text-align:center'>Data</th>
+                <th style='text-align:right'>Amount</th>
+                <th style='text-align:left'>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach($payments as $payment)
+                <tr wire:key="param-{{ $payment->id }}">
+                    <td>{{ $loop->iteration }}</td>
+                    <td style='text-align:center'>{{ $payment->type }}</td>
+                    <td style='text-align:center'>{{ $payment->created_at }}</td>
+                    <td style='text-align:right'>{{ $payment->amount }}</td>
+                    <td style='text-align:left'>{{ $payment->remarks }}</td>
+                  
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-{!! MyHelper::get_toast_dispatch() !!}
 </div>
 
  

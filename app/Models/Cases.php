@@ -17,6 +17,8 @@ class Cases extends Model
                             'charge',
                             'payment',
                             'due',
+                            'court_counter',
+                            'hearing_counter',
                             ]; 
 
     public function appointment()
