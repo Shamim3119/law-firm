@@ -1,7 +1,5 @@
 <div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <br> 
  
@@ -81,18 +79,7 @@
         Livewire.dispatch('refreshAppointments');
     });
  
-    flatpickr("#date", {
-        dateFormat: "Y-m-d"
-    });
  
-    flatpickr("#datetime", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        time_24hr: true
-    });
-
-
-
 </script>
  
 

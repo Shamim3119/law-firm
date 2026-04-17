@@ -1,21 +1,17 @@
 <div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 <br> 
  
     <!-- Form -->
     <form wire:submit.prevent="store">
 
-
         <div class="mb-3">
             <label>Court</label>
-            <select class="form-select" wire:model="court_id">
-                <option selected="" disabled="" value="">Choose...</option>
-                    @foreach($courts as $court)
-                        <option value="{{ $court->id }}">{{ $court->court_no }} / {{ $court->name }}</option>
-                    @endforeach
+           <select id="id_court" class="form-select" wire:model="court_id">
+                <option value="">Choose...</option>
+                @foreach($courts as $court)
+                    <option value="{{ $court->id }}">{{ $court->court_no }} / {{ $court->name }}</option>
+                @endforeach
             </select>
             @error('court_id') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
@@ -24,16 +20,54 @@
             <div class="row">
                 <div class="col-6">
                     <label>Hearing Date</label>
-     <input type="text" class="form-control datepicker" wire:model="hearing_date">
+ 
+                    <div
+                        x-data="{
+                            picker: null,
+
+                            init() {
+                                this.picker = flatpickr(this.$refs.input, {
+                                    dateFormat: 'Y-m-d',
+
+                                    onChange: (selectedDates, dateStr) => {
+                                        this.$wire.set('hearing_date', dateStr);
+                                    }
+                                });
+
+                                // IMPORTANT: listen to edit event
+                                Livewire.on('fill-hearing-form', (data) => {
+                                    const d = data[0];
+
+                                    // sync Livewire state first
+                                    this.$wire.set('court_id', d.court_id);
+                                    this.$wire.set('hearing_date', d.hearing_date);
+                                    this.$wire.set('hearing_time', d.hearing_time);
+                                    this.$wire.set('hearing_id', d.id);
+
+                                    // THEN update UI
+                                    this.picker.setDate(d.hearing_date, true);
+
+                                    document.getElementById('id_court').value = d.court_id;
+                                    document.getElementById('time_hearing').value = d.hearing_time;
+
+                            
+                                });
+                            }
+                        }"
+                        x-init="init()"
+                    >
+                        <input type="text" x-ref="input" class="form-control">
+                    </div>
                     @error('hearing_date') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="col-6">
                     <label>Hearing Time</label>
-                    <input type="time" class="form-control" wire:model="hearing_time">
-                    @error('hearing_time') <span class="text-danger">{{ $message }}</span> @enderror
+  
+                    <input id='time_hearing' type="time" class="form-control" wire:model="hearing_time">
+                                @error('hearing_time') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
                 </div>
-            </div>
-      </div>
     
         <div class="mb-3">
             @if($updateMode)
@@ -75,25 +109,9 @@
         </tbody>
     </table>
 
-<script>
-document.addEventListener('livewire:init', () => {
+ 
+ 
 
-    function initFlatpickr() {
-        document.querySelectorAll('.datepicker').forEach(el => {
-            flatpickr(el, {
-                dateFormat: "Y-m-d"
-            });
-        });
-    }
-
-    initFlatpickr();
-
-    Livewire.hook('message.processed', () => {
-        initFlatpickr();
-    });
-
-});
-</script>
-
+{!! MyHelper::get_toast_dispatch() !!}
  
 </div>

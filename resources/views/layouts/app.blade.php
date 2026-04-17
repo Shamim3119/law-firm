@@ -426,6 +426,15 @@
       crossorigin="anonymous"
     ></script>
 
+<script src="{{ asset('js/script.js') }}"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Alpine -->
+ <!--
+<script src="//unpkg.com/alpinejs" defer></script>
+-->
     <script>
       // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
       // IT'S ALL JUST JUNK FOR DEMO

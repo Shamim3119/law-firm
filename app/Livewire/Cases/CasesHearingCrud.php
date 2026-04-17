@@ -24,7 +24,7 @@ class CasesHearingCrud extends Component
     {
         $this->case_id = $id;
         $this->courts = Court::where('case_id', $id)->get();
-        $this->resetInputFields();
+       // $this->resetInputFields();
     }
 
     private function resetInputFields()
@@ -67,7 +67,16 @@ class CasesHearingCrud extends Component
   
         }
 
-        $this->resetInputFields();
+        // $this->resetInputFields();
+/*
+        $this->dispatch('fill-hearing-form', [
+            'id' => '',
+            'court_id' => '',
+            'hearing_date' => '',
+            'hearing_time' => '',
+        ]);
+ */
+
         $this->updateMode = false;
     }
 
@@ -80,7 +89,18 @@ class CasesHearingCrud extends Component
         $this->hearing_date = $hearing->hearing_date;
         $this->hearing_time = $hearing->hearing_time;
 
+
+       // $this->resetInputFields();
         $this->updateMode = true;
+    
+        $this->dispatch('fill-hearing-form', [
+            'id' => $hearing->id,
+            'court_id' => $hearing->court_id,
+            'hearing_date' => $hearing->hearing_date,
+            'hearing_time' => $hearing->hearing_time,
+        ]);
+    
+    
     }
 
  

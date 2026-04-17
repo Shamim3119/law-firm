@@ -75,6 +75,8 @@ class ParameterCrud extends Component
         $this->name = $parameter->name;
         $this->activeTab = $parameter->tag;
         $this->updateMode = true;
+
+        $this->dispatch('open-edit-box');
     }
 
     public function delete($id)

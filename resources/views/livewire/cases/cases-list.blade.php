@@ -121,10 +121,11 @@
                         class="btn btn-sm btn-{{$btn_hearing}}">
                         Hearing
                     </button>  
+
+  
                 </td>
                 <td>
                     <a href="{{ route('cases.edit', $case->id) }}" class="btn btn-sm btn-warning">Edit</a>
-               
                     <button 
                         wire:click="delete({{ $case->id }})" 
                         onclick="confirm('Are you sure you want to delete this case?') || event.stopImmediatePropagation()"
@@ -159,10 +160,16 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
-
             </div>
         </div>
     </div>
+ 
+
+
+ 
+
+ 
+
 
     <script>
         const modal = document.getElementById('MainModal');
