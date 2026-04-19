@@ -5,6 +5,9 @@ namespace App\Livewire\Appointment;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use App\Models\Appointment;
+use App\Models\Parameter;
+use App\Models\AppointmentDetails;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentList extends Component
 {
@@ -12,6 +15,7 @@ class AppointmentList extends Component
     public $activeTab = 'clients';
     public $flag = 'false';
 
+ 
     public function mount()
     {
         if (request()->has('tab')) {
@@ -48,11 +52,14 @@ class AppointmentList extends Component
 
     public function delete($id)
     {
-        Appointment::findOrFail($id)->delete();
+        $appointment = Appointment::findOrFail($id);
+
+        $appointment->details()->delete();  
+        $appointment->delete();
 
         session()->flash('message', 'Appointment Deleted Successfully.');
 
-        $this->loadAppointments(); // 🔥 refresh list immediately
+        $this->loadAppointments();  
     }
 
     public function render()

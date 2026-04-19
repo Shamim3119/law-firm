@@ -37,7 +37,7 @@ class Login extends Component
             'password' => $this->password
         ])) {
             session()->regenerate();
-            return redirect()->route('parameter.index');
+            return redirect()->route('dashboard');
         }
 
         session()->flash('error', 'Invalid credentials');

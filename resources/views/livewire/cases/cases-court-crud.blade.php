@@ -1,9 +1,14 @@
-<div>
-
-<br>
+<div class='m-3'>
 
 <!-- Form -->
 <form wire:submit.prevent="store" wire:key="court-form-{{ $court_id }}">
+
+
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" wire:model="inactive">
+        <label class="form-check-label" for="exampleCheck1">Inactive</label>
+    </div>
 
     <div class="mb-3">
         <label>Court No</label>
@@ -43,22 +48,23 @@
 
     <div class="mb-3">
         @if($updateMode)
-            <button type="submit" class="btn btn-primary">Update</button>
-            <button type="button" wire:click="cancel" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+            <button type="button" wire:click="cancel" class="btn btn-sm btn-secondary">Cancel</button>
         @else
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-sm btn-success">Save</button>
         @endif
     </div>
 
 </form>
 
+<br>
 <!-- List -->
-<h4 class="mt-3 text-capitalize">Courts Details</h4>
+<h5 class="mt-3 text-capitalize">Courts Details</h5>
 
 <table class="table table-bordered mt-3">
     <thead>
         <tr>
-            <th>SL</th>
+            <th style='width:2%;'>SL</th>
             <th>Court No</th>
             <th>Court Name</th>
             <th>Chief Justice</th>
@@ -68,11 +74,12 @@
 
     <tbody>
         @foreach($courts as $court)
+
             <tr wire:key="court-row-{{ $court->id }}">
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $court->court_no }}</td>
-                <td>{{ $court->name }}</td>
-                <td>{{ $court->chief_justice }}</td>
+                <td class="{{ $court->inactive ? 'text-danger' : '' }}" >{{ $court->court_no }}</td>
+                <td class="{{ $court->inactive ? 'text-danger' : '' }}">{{ $court->name }}</td>
+                <td class="{{ $court->inactive ? 'text-danger' : '' }}">{{ $court->chief_justice }}</td>
                 <td style="text-align: center">
                     <button
                         wire:click="edit({{ $court->id }})"

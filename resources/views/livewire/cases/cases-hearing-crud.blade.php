@@ -1,16 +1,14 @@
-<div>
+<div class='m-3'>
 
-<br> 
- 
+
     <!-- Form -->
     <form wire:submit.prevent="store">
 
         <div class="mb-3">
             <label>Court</label>
            <select id="id_court" class="form-select" wire:model="court_id">
-                <option value="">Choose...</option>
                 @foreach($courts as $court)
-                    <option value="{{ $court->id }}">{{ $court->court_no }} / {{ $court->name }}</option>
+                    <option selected value="{{ $court->id }}">{{ $court->court_no }} / {{ $court->name }}</option>
                 @endforeach
             </select>
             @error('court_id') <span class="text-danger">{{ $message }}</span> @enderror
@@ -71,16 +69,17 @@
     
         <div class="mb-3">
             @if($updateMode)
-                <button type="submit" class="btn btn-primary">Update</button>
-                <button type="button" wire:click="cancel" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                <button type="button" wire:click="cancel" class="btn btn-sm btn-secondary">Cancel</button>
             @else
-                <button type="submit" class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">Save</button>
             @endif
         </div>
     </form>
 
+    <br>
     <!-- List -->
-    <h4 class="mt-3 text-capitalize">Hearing Details</h4>
+    <h5 class="mt-3 text-capitalize">Hearing Details</h5>
     <table class="table table-bordered mt-3">
         <thead>
             <tr>
@@ -97,9 +96,8 @@
                 <tr wire:key="param-{{ $hearing->id }}">
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $hearing->court->name ?? '' }}</td>
-                    <td>{{ $hearing->hearing_date }}</td>
-                    <td>{{ $hearing->hearing_time }}</td>
- 
+                    <td>{{ \Carbon\Carbon::parse($hearing->hearing_date)->format('d M, Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($hearing->hearing_time)->format('g:i A') }}</td>
                     <td style="text-align: center">
                         <button wire:click="edit({{ $hearing->id }})" class="btn btn-primary btn-sm">Edit</button>
                         <button wire:click="delete({{ $hearing->id }})" class="btn btn-danger btn-sm">Delete</button>

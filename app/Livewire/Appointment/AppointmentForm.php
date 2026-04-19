@@ -6,25 +6,25 @@ use Livewire\Component;
 use App\Models\Appointment;
 use Livewire\Attributes\On;
 use App\Models\Parameter;
-use App\Models\AppointmentDetails;
+use App\Models\AppointmentDetail;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentForm extends Component
 {
 
     public $appointment_id;
-    public $appointment_type_id;
-    public $title, $descriptions, $appointment_details;
-    public $appointment_date;
-    public $appointment_start_time;
-    public $appointment_end_time;
+    public $type_id;
+    public $title, $descriptions, $details;
+    public $start_date;
+    public $start_time;
+    public $end_time;
 
     public $client;
     public $client_id;
 
     public $employee;
     public $employee_id;
-    public $appointment_types = [];
+    public $types = [];
 
  
     #[On('EmployeeSelected')]
@@ -43,18 +43,18 @@ class AppointmentForm extends Component
 
     public function mount($id = null)
     {
-        $this->appointment_types = Parameter::where('tag', 'appointment-type')->get();
+        $this->types = Parameter::where('tag', 'appointment-type')->get();
         
         if ($id) {
             $appointment = Appointment::findOrFail($id);
             $this->appointment_id = $appointment->id;
             $this->title = $appointment->title;
             $this->descriptions = $appointment->descriptions;
-            $this->appointment_type_id = $appointment->appointment_type_id;
-            $this->appointment_details = $appointment->appointment_details;
-            $this->appointment_date = $appointment->appointment_date;
-            $this->appointment_start_time = $appointment->appointment_start_time;
-            $this->appointment_end_time = $appointment->appointment_end_time;  
+            $this->type_id = $appointment->type_id;
+            $this->details = $appointment->details;
+            $this->start_date = $appointment->start_date;
+            $this->start_time = $appointment->start_time;
+            $this->end_time = $appointment->end_time;  
              
             $this->employee = $appointment->employee->name ?? '';
             $this->employee_id = $appointment->employee_id;
@@ -73,6 +73,9 @@ class AppointmentForm extends Component
             'descriptions' => 'required',
             'employee_id' => 'required',
             'client_id' => 'required',
+            'start_date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
         ]);
 
         if ($this->appointment_id) {
@@ -84,11 +87,11 @@ class AppointmentForm extends Component
                 'descriptions' => $this->descriptions,
                 'employee_id' => $this->employee_id,
                 'client_id' => $this->client_id,
-                'appointment_type_id' => $this->appointment_type_id,
-                'appointment_details' => $this->appointment_details,
-                'appointment_date' => $this->appointment_date,
-                'appointment_start_time' => $this->appointment_start_time,
-                'appointment_end_time' => $this->appointment_end_time,
+                'type_id' => $this->type_id,
+                'details' => $this->details,
+                'start_date' => $this->start_date,
+                'start_time' => $this->start_time,
+                'end_time' => $this->end_time,
             ]);
 
         } else {
@@ -100,22 +103,22 @@ class AppointmentForm extends Component
                 'descriptions' => $this->descriptions,
                 'employee_id' => $this->employee_id,
                 'client_id' => $this->client_id,
-                'appointment_type_id' => $this->appointment_type_id,
-                'appointment_details' => $this->appointment_details,
-                'appointment_date' => $this->appointment_date,
-                'appointment_start_time' => $this->appointment_start_time,
-                'appointment_end_time' => $this->appointment_end_time,
+                'type_id' => $this->type_id,
+                'details' => $this->details,
+                'start_date' => $this->start_date,
+                'start_time' => $this->start_time,
+                'end_time' => $this->end_time,
                 'code' => $appointmentCode,
             ]);
         }
 
-        AppointmentDetails::updateOrCreate(
+        AppointmentDetail::updateOrCreate(
             ['appointment_id' => $appointment->id],
             [
-                'appointment_date' => $this->appointment_date,
-                'appointment_start_time' => $this->appointment_start_time,
-                'appointment_end_time' => $this->appointment_end_time,
-                'appointment_details' => $this->appointment_details,
+                'start_date' => $this->start_date,
+                'start_time' => $this->start_time,
+                'end_time' => $this->end_time,
+                'details' => $this->details,
             ]
         );
 

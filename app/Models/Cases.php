@@ -19,6 +19,10 @@ class Cases extends Model
                             'due',
                             'court_counter',
                             'hearing_counter',
+                            'hearing_date',
+                            'hearing_time',
+                            'court_no',
+                            'court_name',
                             ]; 
 
     public function appointment()

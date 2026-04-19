@@ -89,7 +89,7 @@
 
               <li class="nav-item {{ request()->routeIs('client.*') || request()->routeIs('appointment.*') || request()->routeIs('cases.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                  <i class="nav-icon bi bi-boxes"></i>
+                  <i class="nav-icon bi bi-ui-checks-grid"></i>
                   <p>
                     Cases & Appointments
                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -121,6 +121,34 @@
               </li>
 
 
+
+              <li class="nav-item {{ request()->routeIs('client.*') || request()->routeIs('appointment.*') || request()->routeIs('cases.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-boxes"></i>
+                  <p>
+                    Settings
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="{{ route('client.index', ['tab' => 'clients', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'clients' ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-circle"></i>
+                        <p>Bussiness</p>
+                      </a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a href="{{ route('appointment.index', ['tab' => 'appointments', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'appointments' ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-circle"></i>
+                        <p>Profile</p>
+                      </a>
+                  </li>
+
+                </ul>
+              </li>
+
+
               <li class="nav-item">
                 <a onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                   <i class="nav-icon bi bi-arrow-left-square"></i>
@@ -130,8 +158,6 @@
                 @csrf
                 </form>
               </li>
-
-  
             </ul>
             <!--end::Sidebar Menu-->
           </nav>

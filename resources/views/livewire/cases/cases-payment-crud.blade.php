@@ -1,5 +1,5 @@
-<div>
-    <form wire:submit.prevent="save" class="m-5">
+<div class="m-3">
+    <form wire:submit.prevent="save" >
         
         <div class="mb-3"> 
             <label>Appointment Status</label>
@@ -23,12 +23,12 @@
             @error('remarks') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
 
-        <button type="submit" class="btn btn-success"> Update</button>
+        <button type="submit" class="btn btn-sm btn-success"> Update</button>
     </form>
 
-
+    <br>
     <!-- List -->
-    <h4 class="mt-3 text-capitalize">Appointment Details</h4>
+    <h5 class="mt-3 text-capitalize">Appointment Details</h5>
     <table class="table table-bordered mt-3">
         <thead>
             <tr>

@@ -64,6 +64,7 @@ class CasesForm extends Component
                 'descriptions' => $this->descriptions,
                 'code' => str_replace('APP-', 'CAS-', $this->code),
                 'charge' => $this->charge, 
+                'due' => $this->charge, 
                 'client_id' => $client_id,
                 'employee_id' => $employee_id,
             ]

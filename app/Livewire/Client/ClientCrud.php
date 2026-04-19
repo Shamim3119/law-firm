@@ -5,8 +5,9 @@ namespace App\Livewire\Client;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 
-class ClientList extends Component
+class ClientCrud extends Component
 {
     use WithPagination;
 
@@ -20,6 +21,11 @@ class ClientList extends Component
     public $sortField = 'id';
     public $sortDirection = 'desc';
     public $flag = 'false';
+
+
+    public $updateMode = false;
+    public $client_id;
+    public $name, $phone, $email;
  
     // Keep state in URL
     protected $queryString = [
@@ -80,11 +86,72 @@ class ClientList extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
-        return view('livewire.client.client-list', [
+        return view('livewire.client.client-crud', [
             'clients' => $clients,
         ])->layout('layouts.app', [
             'title' => 'Client',
             'sub_title' => 'Client List'
         ]);
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        if ($this->client_id) {
+            $client = Client::findOrFail($this->client_id);
+            $client->update([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+            ]);
+        }else{
+            
+            $appointmentCode = DB::select("SELECT fnc_get_code(1) as code")[0]->code;
+            $client = Client::create([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'code' => $appointmentCode,
+            ]);
+        }
+         
+        $this->dispatch('show-toast', message: $this->client_id ? 'Client Updated Successfully' : 'Client Created Successfully');
+
+        $this->resetInputFields();
+
+        $this->updateMode = false;
+
+    }
+
+    public function edit($id)
+    {
+        if ($id) {
+            $client = Client::findOrFail($id);
+            $this->client_id = $id;
+            $this->name = $client->name;
+            $this->phone = $client->phone;
+            $this->email = $client->email;
+            $this->updateMode = true;
+            $this->dispatch('open-edit-box');
+        }
+    }
+
+    private function resetInputFields()
+    {
+        $this->client_id = null;
+        $this->name = '';
+        $this->phone = '';
+        $this->email = '';
+    }
+
+
+    public function cancel()
+    {
+        $this->updateMode = false;
+        $this->resetInputFields();
     }
 }

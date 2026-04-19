@@ -75,10 +75,16 @@ class MyHelper
                     data-bs-toggle='modal' data-bs-target='#ModalStatus'
                     class='btn btn-sm btn-warning'>{$name}</button>";
             case 3:
-                return "<button type='button' disabled class='btn btn-sm btn-info'>{$name}</button>";
+                return "<button type='button' 
+                    onclick=\"{$click}\"
+                    data-bs-toggle='modal' data-bs-target='#ModalStatus'
+                    class='btn btn-sm btn-info'>{$name}</button>";
 
             case 4:
-                return "<button type='button' disabled class='btn btn-sm btn-danger'>{$name}</button>";
+                return "<button type='button' 
+                onclick=\"{$click}\"
+                data-bs-toggle='modal' data-bs-target='#ModalStatus'
+                class='btn btn-sm btn-danger'>{$name}</button>";
 
             case 5:
                 return "<button type='button' disabled class='btn btn-sm btn-success'>{$name}</button>";

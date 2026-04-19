@@ -23,13 +23,16 @@ class CasesHearingCrud extends Component
     public function setCaseId($id)
     {
         $this->case_id = $id;
-        $this->courts = Court::where('case_id', $id)->get();
+        $this->courts = Court::where('case_id', $id)->where('inactive', 0)->get();
+        $this->court_id = $this->courts[0]->id;
        // $this->resetInputFields();
+
+ 
     }
 
     private function resetInputFields()
     {
-        $this->court_id = '';
+        //$this->court_id = '';
         $this->hearing_date = '';
         $this->hearing_time = '';
     }
@@ -44,25 +47,30 @@ class CasesHearingCrud extends Component
         ]);
 
         if ($this->hearing_id) {
-            $court = Hearing::find($this->hearing_id);
+            $hearing = Hearing::find($this->hearing_id);
 
-            if ($court) {
-                $court->update($validatedData);
+            if ($hearing ) {
+                $hearing->update($validatedData);
+
+                $cases = Cases::findOrFail($this->case_id);
+                $cases->update([
+                    'hearing_date' => $validatedData['hearing_date'],
+                    'hearing_time' => $validatedData['hearing_time'],
+                ]);
+
                 $this->dispatch('show-toast', message: 'Updated Successfully.');
-         
             }
         } else {
 
-
             $cases = Cases::findOrFail($this->case_id);
-
             $cases->update([
                 'hearing_counter' => $cases->hearing_counter + 1,
+                'hearing_date' => $validatedData['hearing_date'],
+                'hearing_time' => $validatedData['hearing_time'],
             ]);
 
             $validatedData['case_id'] = $this->case_id;
             Hearing::create($validatedData);
-
             $this->dispatch('show-toast', message: 'Created Successfully.');
   
         }
@@ -99,11 +107,7 @@ class CasesHearingCrud extends Component
             'hearing_date' => $hearing->hearing_date,
             'hearing_time' => $hearing->hearing_time,
         ]);
-    
-    
     }
-
- 
  
     public function render()
     {

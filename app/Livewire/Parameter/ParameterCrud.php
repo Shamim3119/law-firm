@@ -54,14 +54,12 @@ class ParameterCrud extends Component
             $parameter = Parameter::find($this->parameter_id);
             if ($parameter) {
                 $parameter->update($validatedData);
-                session()->flash('message', ucfirst($this->activeTab) . ' Updated Successfully.');
+                $this->dispatch('show-toast', message: ucfirst($this->activeTab) . ' Updated Successfully.');
             }
         } else {
             Parameter::create($validatedData);
-            session()->flash('message', ucfirst($this->activeTab) . ' Created Successfully.');
+            $this->dispatch('show-toast', message: ucfirst($this->activeTab) . ' Created Successfully.');
         }
-
-        $this->dispatch('show-toast', message: session('message'));
 
         $this->resetInputFields();
         $this->updateMode = false;

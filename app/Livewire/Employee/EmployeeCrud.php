@@ -5,8 +5,9 @@ namespace App\Livewire\Employee;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Employee;
+use App\Models\Parameter;
 
-class EmployeeList extends Component
+class EmployeeCrud extends Component
 {
     use WithPagination;
 
@@ -20,6 +21,15 @@ class EmployeeList extends Component
     public $departmentFilter = '';
     public $designationFilter = '';
     public $flag = 'false';
+
+    public $lawyer = null;
+    public $updateMode = false;
+    public $employee_id;
+    public $name, $phone, $email, $department_id, $designation_id;
+
+    public $departments = [];
+    public $designations = [];
+
 
     // ✅ Persist in URL
     protected $queryString = [
@@ -52,18 +62,22 @@ class EmployeeList extends Component
         $this->resetPage();
     }
 
-    public function mount()
+    public function mount($lawyer = null)
     {
+        $this->departments = Parameter::where('tag', 'department')->get();
+        $this->designations = Parameter::where('tag', 'designation')->get();
+
         if (request()->has('tab')) {
             $this->activeTab = request('tab');
         }
+        $this->lawyer = $lawyer;
         $this->flag = request()->get('flag', 'false');
     }
 
     public function delete($id)
     {
         Employee::findOrFail($id)->delete();
-        session()->flash('message', 'Employee Deleted Successfully.');
+        $this->dispatch('show-toast', message: 'Employee Deleted Successfully.');
         $this->resetPage();
     }
 
@@ -83,7 +97,14 @@ class EmployeeList extends Component
 
     public function render()
     {
-        $query = Employee::with(['department', 'designation']);
+ 
+        $query = Employee::with(['department', 'designation']); // base query
+
+        if (!empty($this->lawyer)) {
+            $query->whereHas('designation', function ($q) {
+                $q->where('name', $this->lawyer);
+            });
+        }
 
         // 🔍 Search
         if ($this->search) {
@@ -119,7 +140,7 @@ class EmployeeList extends Component
         $departments = \App\Models\Parameter::where('tag', 'department')->get();
         $designations = \App\Models\Parameter::where('tag', 'designation')->get();
 
-        return view('livewire.employee.employee-list', [
+        return view('livewire.employee.employee-crud', [
             'employees' => $employees,
             'departments' => $departments,
             'designations' => $designations,
@@ -128,4 +149,81 @@ class EmployeeList extends Component
             'sub_title' => 'Employee List'
         ]);
     }
+
+
+    public function edit($id)
+    {
+        $this->departments = Parameter::where('tag', 'department')->get();
+        $this->designations = Parameter::where('tag', 'designation')->get();
+
+        if ($id) {
+            $employee = Employee::findOrFail($id);
+            $this->employee_id = $employee->id;
+            $this->name = $employee->name;
+            $this->phone = $employee->phone;
+            $this->email = $employee->email;
+            $this->department_id = $employee->department_id;
+            $this->designation_id = $employee->designation_id;
+            $this->updateMode = true;
+            $this->dispatch('open-edit-box');
+        }
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|email',
+            'department_id' => 'required|integer',
+            'designation_id' => 'required|integer',
+        ]);
+    
+        if ($this->employee_id) {
+            $employee = Employee::findOrFail($this->employee_id);
+            $employee->update([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'department_id' => $this->department_id,
+                'designation_id' => $this->designation_id,
+            ]);
+        }else{
+            
+            $empcode = DB::select("SELECT fnc_get_code(0) as code")[0]->code;
+
+            $employee = Employee::create([
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'department_id' => $this->department_id,
+                'designation_id' => $this->designation_id,
+                'code' => $empcode,
+            ]);
+        }
+ 
+        $this->dispatch('show-toast', message: $this->employee_id ? 'Employee Updated Successfully' : 'Employee Created Successfully');
+
+        $this->resetInputFields();
+
+        $this->updateMode = false;
+    }
+
+
+    private function resetInputFields()
+    {
+        $this->employee_id = null;
+        $this->name = '';
+        $this->phone = '';
+        $this->email = '';
+    }
+
+
+    public function cancel()
+    {
+        $this->updateMode = false;
+        $this->resetInputFields();
+    }
+
+ 
 }

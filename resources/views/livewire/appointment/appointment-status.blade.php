@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent="save" class="m-5">
+    <form wire:submit.prevent="save" class="p-4">
         
         <div class="mb-3">
             <label>Appointment Status</label>
@@ -16,7 +16,7 @@
             @error('note') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
 
-        <button type="submit" class="btn btn-success"> Update</button>
+        <button type="submit" class="btn btn-sm btn-success"> Update</button>
     </form>
 </div>
 
