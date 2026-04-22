@@ -7,9 +7,10 @@ use App\Models\Parameter;
 
 class ParameterCrud extends Component
 {
-    public $parameters, $name, $parameter_id;
+    public $parameters, $name, $inactive, $parameter_id;
     public $updateMode = false;
     public $activeTab = 'religion';
+ 
 
     public function mount()
     {
@@ -39,6 +40,7 @@ class ParameterCrud extends Component
     private function resetInputFields()
     {
         $this->name = '';
+        $this->inactive = 0;
         $this->parameter_id = null;
     }
 
@@ -46,6 +48,7 @@ class ParameterCrud extends Component
     {
         $validatedData = $this->validate([
             'name' => 'required|string',
+            'inactive' => 'required|boolean',
         ]);
 
         $validatedData['tag'] = $this->activeTab;
@@ -63,6 +66,7 @@ class ParameterCrud extends Component
 
         $this->resetInputFields();
         $this->updateMode = false;
+        $this->showForm = false;
     }
 
     public function edit($id)
@@ -70,23 +74,31 @@ class ParameterCrud extends Component
         $parameter = Parameter::findOrFail($id);
 
         $this->parameter_id = $id;
+        $this->inactive = $parameter->inactive;
         $this->name = $parameter->name;
         $this->activeTab = $parameter->tag;
         $this->updateMode = true;
-
-        $this->dispatch('open-edit-box');
+ 
+        // $this->dispatch('open-edit-box');
     }
 
     public function delete($id)
     {
         Parameter::find($id)?->delete();
-        session()->flash('message', 'Parameter Deleted Successfully.');
-        $this->dispatch('show-toast', message: session('message'));
+        $this->dispatch('show-toast', 'Parameter Deleted Successfully.');
     }
 
     public function cancel()
     {
         $this->updateMode = false;
         $this->resetInputFields();
+ 
+    }
+
+    public function create()
+    {
+        $this->resetInputFields();
+        $this->updateMode = true;
+ 
     }
 }

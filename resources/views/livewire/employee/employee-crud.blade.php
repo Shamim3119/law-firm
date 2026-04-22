@@ -15,8 +15,8 @@
         @include('livewire.employee.employee-form')
     @endif
 
-            
-    <div style='opacity:1' id='boxView'  class="card card-primary card-outline mb-4">
+    
+    <div @if($updateMode) style="display:none;" @endif id='boxView' class="card card-primary card-outline mb-4">
         <div class="card-header">
             <div class="card-title">{{ ucfirst($activeTab) }} List</div>
         </div>
@@ -79,17 +79,21 @@
                             <th wire:click="sortBy('name')" style="cursor:pointer;">
                                 Name @include('sort-icon', ['field' => 'name'])
                             </th>
+                            <th>Department</th>
+                            <th>Designation</th>
                         @if($flag == 'true')
                             <th wire:click="sortBy('email')" style="cursor:pointer;">
                                 Email @include('sort-icon', ['field' => 'email'])
                             </th>
-
                             <th wire:click="sortBy('phone')" style="cursor:pointer;">
                                 Phone @include('sort-icon', ['field' => 'phone'])
                             </th>
+                            <th style='text-align:center;'>Attendance</th>
+                            <th style='text-align:center;'>Leave</th>
+                            <th style='text-align:center;'>Calender</th>
                         @endif
-                            <th>Department</th>
-                            <th>Designation</th>
+
+
                             <th style='text-align:center;'>Action</th>
                         </tr>
                     </thead>
@@ -100,13 +104,47 @@
                             <td>{{ $loop->iteration  }}</td>
                             <td>{{ $employee->code }}</td>
                             <td>{{ $employee->name }}</td>
-                        @if($flag == 'true')
-                            <td>{{ $employee->phone }}</td>
-                            <td>{{ $employee->email }}</td>
-                        @endif
                             <td>{{ $employee->department->name ?? '-' }}</td>
                             <td>{{ $employee->designation->name ?? '-' }}</td>
-                            <td align='center'>
+  
+                        @if($flag == 'true')
+                            <td>{{ $employee->email }}</td>
+                            <td>{{ $employee->phone }}</td>
+                            <td style='text-align:center;'>
+                                <button 
+                                wire:click="$dispatch('setEmployeeId', { data: { id: {{ $employee->id }} } })"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ModalAttendance"
+                                class="btn btn-sm btn-{{ $employee->attendance_id == 0 ? 'danger' : 'success' }}">{{ $employee->attendance->name ?? '--' }}
+                                </button>
+                            </td>
+                            <td style='text-align:center;'>
+      
+                                <button
+                   
+                                    wire:click="$dispatch('setEmployeeId', { data: { id: {{ $employee->id }} } })"
+
+           
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ModalLeave"
+                                    class="btn btn-sm btn-{{ $employee->leave_id == 0 ? 'danger' : 'success' }}">
+                                    {{ $employee->leave->name ?? '--' }}
+                                </button>
+
+
+                            </td>
+                            <td style='text-align:center;'>
+                                <button
+                                    wire:click="openCalendarModal({{ $employee->id }})"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ModalCalender"
+                                    class="btn btn-sm btn-{{ $employee->calendar_id == 0 ? 'danger' : 'success' }}">
+                                    {{ $employee->calendar->title ?? '--' }}
+                                </button>
+                            </td>
+                      
+                        @endif
+                            <td style='text-align:center;'>
                                 @if($flag == 'true')
                                     <button   
                                         wire:click="edit({{ $employee->id }})"
@@ -158,6 +196,61 @@
                         document.body.style.removeProperty('padding-right');
                     }, 300);
                 });
+
+
+
+ 
+                document.addEventListener('livewire:init', () => {
+                    Livewire.on('close-calendar-modal', () => {
+                        let modalEl = document.getElementById('ModalCalender');
+                        let modal = bootstrap.Modal.getInstance(modalEl);
+
+                        if (modal) {
+                            modal.hide();
+                        }
+
+                        setTimeout(() => {
+                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                            document.body.classList.remove('modal-open');
+                        }, 300);
+                    });
+                });
+
+
+                document.addEventListener('livewire:init', () => {
+                    Livewire.on('close-leave-modal', () => {
+                        let modalEl = document.getElementById('ModalLeave');
+                        let modal = bootstrap.Modal.getInstance(modalEl);
+
+                        if (modal) modal.hide();
+
+                        setTimeout(() => {
+                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                            document.body.classList.remove('modal-open');
+                   
+                        }, 300);
+                    });
+                });
+
+
+                document.addEventListener('livewire:init', () => {
+                    Livewire.on('close-leave-modal', () => {
+                        let modalEl = document.getElementById('ModalAttendance');
+                        let modal = bootstrap.Modal.getInstance(modalEl);
+
+                        if (modal) modal.hide();
+
+                        setTimeout(() => {
+                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                            document.body.classList.remove('modal-open');
+                   
+                        }, 300);
+                    });
+                });
+
+
+
+
             </script>
 
 

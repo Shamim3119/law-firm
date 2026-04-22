@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Parameter extends Model
 {
-    protected $fillable = ['name', 'tag'];
+    protected $fillable = ['name', 'inactive', 'tag'];
     protected $table = 'parameters';
     
 }

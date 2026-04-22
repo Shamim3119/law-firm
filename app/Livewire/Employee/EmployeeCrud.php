@@ -6,6 +6,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Employee;
 use App\Models\Parameter;
+use App\Models\LeaveCalendar;
+use Livewire\Attributes\On;
+
 
 class EmployeeCrud extends Component
 {
@@ -29,6 +32,49 @@ class EmployeeCrud extends Component
 
     public $departments = [];
     public $designations = [];
+
+    public $calendars = [];
+
+
+    public $selectedEmployeeId = null;
+    public $calendar_id = null;
+    
+    protected $listeners = [
+        'refreshEmployees' => '$refresh',
+    ];
+    
+    public function openCalendarModal($employeeId)
+    {
+        $this->selectedEmployeeId = $employeeId;
+
+        $calendars = LeaveCalendar::all();
+
+        // if only one calendar exists → auto select it
+        if ($calendars->count() == 1) {
+            $this->calendar_id = $calendars->first()->id;
+        } else {
+            $this->calendar_id = null;
+        }
+    }
+ 
+
+    public function applyCalendar()
+    {
+        if (!$this->selectedEmployeeId || !$this->calendar_id) return;
+
+        Employee::where('id', $this->selectedEmployeeId)
+            ->update([
+                'calendar_id' => $this->calendar_id,
+            ]);
+
+        $this->dispatch('show-toast', message: 'Calendar Applied Successfully');
+
+        // close modal
+        $this->dispatch('close-calendar-modal');
+
+        // refresh list
+        $this->resetPage();
+    }
 
 
     // ✅ Persist in URL
@@ -64,6 +110,7 @@ class EmployeeCrud extends Component
 
     public function mount($lawyer = null)
     {
+        $this->calendars = LeaveCalendar::all();
         $this->departments = Parameter::where('tag', 'department')->get();
         $this->designations = Parameter::where('tag', 'designation')->get();
 
@@ -98,6 +145,7 @@ class EmployeeCrud extends Component
     public function render()
     {
  
+
         $query = Employee::with(['department', 'designation']); // base query
 
         if (!empty($this->lawyer)) {
@@ -165,7 +213,7 @@ class EmployeeCrud extends Component
             $this->department_id = $employee->department_id;
             $this->designation_id = $employee->designation_id;
             $this->updateMode = true;
-            $this->dispatch('open-edit-box');
+          //  $this->dispatch('open-edit-box');
         }
     }
 
@@ -225,5 +273,10 @@ class EmployeeCrud extends Component
         $this->resetInputFields();
     }
 
+    public function create()
+    {
+        $this->resetInputFields();
+        $this->updateMode = true;
  
+    }
 }

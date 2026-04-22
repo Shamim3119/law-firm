@@ -2,13 +2,19 @@
     <div class='row'>
         <div class='col-6'>
 
-            <button style='display:block;' onclick="fadeToggle('btnNew', 'boxNew', 'boxView')" id="btnNew" class="mb-3 btn btn-sm btn-primary" >
-               New {{ ucfirst($activeTab) }}  
+            <button 
+                wire:click="create"
+                class="mb-3 btn btn-sm btn-primary"
+                @if($updateMode) style="display:none;" @endif
+            >
+                New {{ ucfirst($activeTab) }}
             </button>
 
             <form wire:submit.prevent="save">
 
-                <div style='display:none;' id='boxNew' class="card card-primary card-outline mb-4">
+ 
+                <div @if(!$updateMode) style="display:none;" @endif id='boxNew' class="card card-primary card-outline mb-4">
+
                     <div class="card-header">
                         <div class="card-title">{{ ucfirst($activeTab) }} Update</div>
                     </div> 
@@ -54,7 +60,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="m-3 d-flex justify-content-center">
-                            @if($updateMode)
+                            @if($employee_id)
                                 <button type="submit" class="btn btn-success">Update</button>&nbsp;&nbsp;
                                 <button type="button" wire:click="cancel" class="btn btn-secondary">Cancel</button>
                             @else
@@ -68,4 +74,81 @@
         </div>
     </div>
 </div>
+
+
+
+<div class="modal fade" id="ModalCalender" tabindex="-1" aria-labelledby="ModalCalendarLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalCalendarLabel">Apply Calendar</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-3">
+                <div class="mb-3">
+                    <label>Leave Calendar :</label>
+                    <select class="form-select" wire:model="calendar_id">
+                            @foreach($calendars as $calendar)
+                                <option value="{{ $calendar->id }}">
+                                    {{ $calendar->year }} - {{ $calendar->title }}
+                                </option>
+                            @endforeach
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button type="button"
+                            class="btn btn-sm btn-primary"
+                            wire:click="applyCalendar"
+                            data-bs-dismiss="modal">
+                        Apply
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade modal-lg" id="ModalLeave" tabindex="-1" aria-labelledby="ModalLeaveLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLeaveLabel">Apply Leave Schedule</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-3">
+ 
+                @livewire('leave-schedule.leave-schedule-crud')
+            </div>                   
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-lg" id="ModalAttendance" tabindex="-1" aria-labelledby="ModalAttendanceLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalAttendanceLabel">Apply Attendance Schedule</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-3">
+ 
+                @livewire('attendance-schedule.attendance-schedule-crud')
+            </div>                   
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 

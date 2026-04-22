@@ -44,4 +44,19 @@ class Employee extends Model
     {
         return $this->belongsTo(Parameter::class, 'designation_id');
     }
+
+    public function attendance()
+    {
+        return $this->belongsTo(AttendanceSchedule::class, 'attendance_id');
+    }
+
+    public function leave()
+    {
+        return $this->belongsTo(LeaveSchedule::class, 'leave_id');
+    }
+    
+    public function calendar()
+    {
+        return $this->belongsTo(LeaveCalendar::class, 'calendar_id');
+    }
 }

@@ -1,14 +1,18 @@
 <div>  
      <div class='row'>
         <div class='col-6'>
-
-            <button style='display:block;' onclick="fadeToggle('btnNew', 'boxNew', 'boxView')" id="btnNew" class="mb-3 btn btn-sm btn-primary" >
-               New {{ ucfirst($activeTab) }}  
+            <button 
+                wire:click="create"
+                class="mb-3 btn btn-sm btn-primary"
+                @if($updateMode) style="display:none;" @endif
+            >
+                New {{ ucfirst($activeTab) }}
             </button>
 
             <form wire:submit.prevent="save">
 
-                <div style='display:none;' id='boxNew' class="card card-primary card-outline mb-4">
+                <div @if(!$updateMode) style="display:none;" @endif id='boxNew' class="card card-primary card-outline mb-4">
+
                     <div class="card-header">
                         <div class="card-title">{{ ucfirst($activeTab) }} Update</div>
                     </div> 
@@ -35,7 +39,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="m-3 d-flex justify-content-center">
-                            @if($updateMode)
+                            @if($client_id)
                                 <button type="submit" class="btn btn-success">Update</button>&nbsp;&nbsp;
                                 <button type="button" wire:click="cancel" class="btn btn-secondary">Cancel</button>
                             @else

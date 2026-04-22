@@ -10,7 +10,8 @@
         "almasaeed2010/adminlte": "4.0.0-rc3",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",
-        "livewire/livewire": "^4.2"
+        "livewire/livewire": "^4.2",
+        "setasign/fpdf": "^1.8"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.7",

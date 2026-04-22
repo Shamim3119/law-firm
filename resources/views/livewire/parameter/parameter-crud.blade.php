@@ -2,10 +2,11 @@
     <!-- Tabs -->
     <ul class="nav nav-tabs">
 
+
         <li class="nav-item">
-            <a href="{{ route('parameter.index', ['tab' => 'religion']) }}"
-            class="nav-link {{ $activeTab == 'religion' ? 'active' : '' }}">
-                Religion
+            <a href="{{ route('parameter.index', ['tab' => 'leave-type']) }}"
+            class="nav-link {{ $activeTab == 'leave-type' ? 'active' : '' }}">
+                Leave Type
             </a>
         </li>
 
@@ -31,6 +32,13 @@
         </li>
 
         <li class="nav-item">
+            <a href="{{ route('parameter.index', ['tab' => 'religion']) }}"
+            class="nav-link {{ $activeTab == 'religion' ? 'active' : '' }}">
+                Religion
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="{{ route('parameter.index', ['tab' => 'gender']) }}"
             class="nav-link {{ $activeTab == 'gender' ? 'active' : '' }}">
                 Gender
@@ -43,27 +51,39 @@
     <div class='row'>
         <div class='col-12 col-md-6'>
 
-            <button style='display:block;' onclick="fadeToggle('btnNew', 'boxNew', 'boxView')" id="btnNew" class="mb-3 btn btn-sm btn-primary" >
-                New {{ ucfirst($activeTab) }}  
+ 
+
+            <button 
+                wire:click="create"
+                class="mb-3 btn btn-sm btn-primary"
+                @if($updateMode) style="display:none;" @endif
+            >
+                New {{ ucfirst($activeTab) }}
             </button>
          
-            <div style='display:none;' id='boxNew' class="card card-primary card-outline mb-4">
+ 
+            <div @if(!$updateMode) style="display:none;" @endif id='boxNew' class="card card-primary card-outline mb-4">
                 <div class="card-header">
                     <div class="card-title">{{ ucfirst($activeTab) }} Update</div>
                 </div>
 
                 <form wire:submit.prevent="store" wire:key="parameter-form-{{ $updateMode ? 'edit' : 'create' }}">
+                    
                     <div class="card-body">
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" wire:model="inactive">
+                            <label class="form-check-label" for="exampleCheck1">Inactive</label>
+                        </div>
+
                         <div class="mb-3">
                             <label class="mb-2">{{ ucfirst($activeTab) }} :</label>
-                    
                             <input
                                 type="text"
                                 class="form-control"
                                 placeholder="Name"
                                 wire:model.defer="name"
                             >
-
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -71,7 +91,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="m-3 d-flex justify-content-center">
-                            @if($updateMode)
+                            @if($parameter_id)
                                 <button type="submit" class="btn btn-primary">Update</button>&nbsp;&nbsp;
                                 <button type="button" wire:click="cancel" class="btn btn-secondary">Cancel</button>
                             @else
@@ -84,7 +104,8 @@
             </div>
         
     
-            <div style='opacity:1' id='boxView'  class="card card-primary card-outline mb-4">
+
+            <div @if($updateMode) style="display:none;" @endif id='boxView' class="card card-primary card-outline mb-4">
                 <div class="card-header">
                     <div class="card-title">{{ ucfirst($activeTab) }} List</div>
                 </div>
@@ -96,6 +117,7 @@
                             <tr>
                                 <th style="width:2%">SL</th>
                                 <th>Name</th>
+                                <th style="width:15%;text-align:center;">Status</th>
                                 <th style="text-align:center; width:150px;">Action</th>
                             </tr>
                         </thead>
@@ -106,6 +128,7 @@
 
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $parameter->name }}</td>
+                                    <td class="{{ $parameter->inactive ? 'text-danger' : '' }}" style="text-align:center">{{ $parameter->inactive == 0 ? 'Active' : 'Inactive' }}</td>
 
                                     <td style="text-align:center">
                                         <button   
@@ -133,11 +156,5 @@
 
     {!! MyHelper::get_toast_dispatch() !!}
 
-    <script> 
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('open-edit-box', () => {
-                fadeToggle('btnNew', 'boxNew', 'boxView');
-            });
-        });
-    </script>
+ 
 </div>

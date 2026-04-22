@@ -20,6 +20,7 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Business;
 
 class Login extends Component
 {
@@ -37,6 +38,20 @@ class Login extends Component
             'password' => $this->password
         ])) {
             session()->regenerate();
+
+            $user = Auth::user();
+            $business = Business::find($user->business_id);
+
+            // ✅ Store in session
+            session([
+                'user_id' => $user->id,
+                'user_name' => $user->name, // 👈 add this
+                'user_image' => $user->image, // 👈 add this
+
+                'business_name' => $business?->name,
+                'business_logo' => $business?->logo,
+            ]);
+
             return redirect()->route('dashboard');
         }
 

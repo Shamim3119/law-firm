@@ -88,6 +88,7 @@
                             </button>
 
                             <button 
+                                @disabled($appointment->status->id == 1)
                                 type="button"
                                 wire:click="$dispatch('setAppointmentId', { id: {{ $appointment->id }} })"
                                 data-bs-toggle="modal" 
@@ -99,12 +100,12 @@
                     @else
                         <td  style='text-align:center;'>
                             <button 
-        
+                          
                                 wire:click="$dispatch('appointmentSelected', { data: { id: {{ $appointment->id }}, code: '{{ $appointment->code }}' } })"
                                 class="btn btn-sm btn-warning">
                                 Add
                             </button>
-                            </td>
+                        </td>
                     @endif  
                     </tr>
                     @endforeach

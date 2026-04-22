@@ -245,7 +245,7 @@
             <li class="nav-item dropdown user-menu">
               <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <img
-                  src="/dist/assets/img/user2-160x160.jpg"
+                  src="{{ session('user_image') ? asset('storage/' . session('user_image')) : 'https://via.placeholder.com/50' }}"
                   class="user-image rounded-circle shadow"
                   alt="User Image"
                 />
@@ -255,12 +255,12 @@
                 <!--begin::User Image-->
                 <li class="user-header text-bg-primary">
                   <img
-                    src="/dist/assets/img/user2-160x160.jpg"
+                    src="{{ session('user_image') ? asset('storage/' . session('user_image')) : 'https://via.placeholder.com/50' }}"
                     class="rounded-circle shadow"
                     alt="User Image"
                   />
                   <p>
-                    Alexander Pierce - Web Developer
+                    {{ session('user_name') }}
                     <small>Member since Nov. 2023</small>
                   </p>
                 </li>
@@ -305,13 +305,14 @@
           <a href="/dist/index.html" class="brand-link">
             <!--begin::Brand Image-->
             <img
-              src="/dist/assets/img/AdminLTELogo.png"
+              src="{{ session('business_logo') ? asset('storage/' . session('business_logo')) : 'https://via.placeholder.com/50' }}"
               alt="AdminLTE Logo"
               class="brand-image opacity-75 shadow"
             />
+ 
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
-            <span class="brand-text fw-light">AdminLTE 4</span>
+            <span class="brand-text fw-light">{{ session('business_name')}}</span>
             <!--end::Brand Text-->
           </a>
           <!--end::Brand Link-->

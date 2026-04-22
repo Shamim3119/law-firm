@@ -136,7 +136,7 @@ class ClientCrud extends Component
             $this->phone = $client->phone;
             $this->email = $client->email;
             $this->updateMode = true;
-            $this->dispatch('open-edit-box');
+         //   $this->dispatch('open-edit-box');
         }
     }
 
@@ -153,5 +153,12 @@ class ClientCrud extends Component
     {
         $this->updateMode = false;
         $this->resetInputFields();
+    }
+
+    public function create()
+    {
+        $this->resetInputFields();
+        $this->updateMode = true;
+ 
     }
 }
