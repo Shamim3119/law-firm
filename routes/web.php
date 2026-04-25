@@ -27,9 +27,14 @@ use App\Livewire\Cases\CasesList;
 use App\Livewire\Cases\CasesForm;
 
 use App\Http\Controllers\PdfController;
+
+use App\Livewire\AttendanceInfo\AttendanceInfoCrud; 
+use App\Livewire\AttendanceStatus\AttendanceStatusCrud; 
+use App\Livewire\LeaveInfo\LeaveInfoCrud; 
+use App\Livewire\LeaveStatus\LeaveStatusCrud; 
  
 
-
+ 
  
 
  
@@ -50,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/leave-schedule', LeaveScheduleCrud::class)->name('leave-schedule.index');
     Route::get('/prorated_leave', ProratedLeaveCrud::class)->name('prorated-leave.index');
     Route::get('/leave-calendar', LeaveCalendarCrud::class)->name('leave-calendar.index');
+
+    Route::get('/attendance-info', AttendanceInfoCrud::class)->name('attendance-info.index');
+    Route::get('/attendance-status', AttendanceStatusCrud::class)->name('attendance-status.index');
+    Route::get('/leave-info', LeaveInfoCrud::class)->name('leave-info.index');
+    Route::get('/leave-status', LeaveStatusCrud::class)->name('leave-status.index');
 
        
  

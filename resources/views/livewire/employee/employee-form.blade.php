@@ -77,7 +77,7 @@
 
 
 
-<div class="modal fade" id="ModalCalender" tabindex="-1" aria-labelledby="ModalCalendarLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="ModalCalender" wire:ignore.self tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -88,18 +88,19 @@
                 <div class="mb-3">
                     <label>Leave Calendar :</label>
                     <select class="form-select" wire:model="calendar_id">
-                            @foreach($calendars as $calendar)
-                                <option value="{{ $calendar->id }}">
-                                    {{ $calendar->year }} - {{ $calendar->title }}
-                                </option>
-                            @endforeach
+                        <option value="">Select Calendar</option>
+                        @foreach($calendars as $calendar)
+                            <option value="{{ $calendar->id }}">
+                                {{ $calendar->year }} - {{ $calendar->title }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="mb-3">
                     <button type="button"
                             class="btn btn-sm btn-primary"
                             wire:click="applyCalendar"
-                            data-bs-dismiss="modal">
+                             >
                         Apply
                     </button>
                 </div>

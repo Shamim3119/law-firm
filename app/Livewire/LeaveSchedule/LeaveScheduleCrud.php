@@ -93,8 +93,8 @@ class LeaveScheduleCrud extends Component
     public function store()
     {
         $validatedData = $this->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ]);
 
         // dynamic validation for leave types

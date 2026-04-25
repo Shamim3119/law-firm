@@ -75,16 +75,15 @@
               </li>
 
               <li class="nav-item">
-                  <a href="{{ route('attendance-schedule.index') }}" class="nav-link active">
+                  <a href="{{ route('attendance-schedule.index', ['tab' => 'attendance-schedule', 'isModal' => false]) }}" class="nav-link active">
                   <i class="nav-icon bi bi-alarm"></i>
                   <p>Attendance Schedule</p>
                 </a>
               </li>
 
-
               <li class="nav-item {{ request()->routeIs('leave-schedule.*') || request()->routeIs('prorated_leave.*') || request()->routeIs('leave-calendar.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
-                  <i class="nav-icon bibi-brightness-alt-high"></i>
+                  <i class="nav-icon bi bi-brightness-alt-high"></i>
                   <p>
                     Leave Plan
                     <i class="nav-arrow bi bi-chevron-right"></i>
@@ -92,21 +91,21 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                      <a href="{{ route('leave-schedule.index', ['tab' => 'leave-schedule', 'isModal' => true]) }}" class="nav-link {{ request('tab') == 'leave-schedule' ? 'active' : '' }}">
+                      <a href="{{ route('leave-schedule.index', ['tab' => 'leave-schedule', 'isModal' => false]) }}" class="nav-link {{ request('tab') == 'leave-schedule' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Leave Schedule</p>
                       </a>
                   </li>
 
                   <li class="nav-item">
-                      <a href="{{ route('prorated-leave.index', ['tab' => 'prorated-leave', 'isModal' => true]) }}" class="nav-link {{ request('tab') == 'prorated-leave' ? 'active' : '' }}">
+                      <a href="{{ route('prorated-leave.index', ['tab' => 'prorated-leave', 'isModal' => false]) }}" class="nav-link {{ request('tab') == 'prorated-leave' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Prorated Leave</p>
                       </a>
                   </li>
 
                   <li class="nav-item">
-                      <a href="{{ route('leave-calendar.index', ['tab' => 'leave-calendar', 'isModal' => true]) }}" class="nav-link {{ request('tab') == 'leave-calendar' ? 'active' : '' }}">
+                      <a href="{{ route('leave-calendar.index', ['tab' => 'leave-calendar', 'isModal' => false]) }}" class="nav-link {{ request('tab') == 'leave-calendar' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Leave Calendar</p>
                       </a>
@@ -129,6 +128,57 @@
                     <a href="{{ route('employee.index', ['tab' => 'employees', 'flag' => 'true']) }}" class="nav-link active">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Employee Info</p>
+                    </a>
+                </li>
+                </ul>
+              </li>
+
+
+
+              <li class="nav-item {{ request()->routeIs('attendance.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-award-fill"></i>
+                  <p>
+                    Attendance
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('attendance-info.index', ['tab' => 'attendance-info', 'flag' => false]) }}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Attendance Info</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('attendance-status.index', ['tab' => 'attendance-status', 'flag' => false]) }}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Attendance Status</p>
+                    </a>
+                </li>
+                </ul>
+              </li>
+
+
+              <li class="nav-item {{ request()->routeIs('leave.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-body-text"></i>
+                  <p>
+                    Leave
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('leave-info.index', ['tab' => 'leave-info', 'flag' => true]) }}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Leave Info</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('leave-status.index', ['tab' => 'leave-status', 'flag' => true]) }}" class="nav-link active">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Leave Status</p>
                     </a>
                 </li>
                 </ul>

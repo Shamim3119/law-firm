@@ -12,6 +12,7 @@ class ProratedLeaveCrud extends Component
     public $activeTab = 'prorated-leave';
     public $updateMode = false;
     public $showForm = false;
+    public $isModal = false;
     public $prorateds;
     public $leave_types;
     public $schedules;
@@ -47,6 +48,16 @@ class ProratedLeaveCrud extends Component
             ]);
     }
 
+    public function mount()
+    {
+        if (request()->has('tab')) {
+            $this->activeTab = request('tab');
+        }
+        if (request()->has('isModal')) {
+            $this->isModal = true;
+        }
+ 
+    }
  
     private function resetInputFields()
     {

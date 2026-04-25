@@ -43,7 +43,7 @@ class AttendanceScheduleCrud extends Component
             ->update(['attendance_id' => $scheduleId]);
 
         // ✅ close modal
-        $this->dispatch('close-leave-modal');
+        $this->dispatch('close-attendance-modal');
 
         // ✅ VERY IMPORTANT → trigger refresh
         $this->dispatch('refreshEmployees');

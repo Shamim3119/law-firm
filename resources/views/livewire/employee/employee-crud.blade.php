@@ -160,7 +160,7 @@
                                     </button>
                                 @else
                                     <button 
-                                        wire:click="$dispatch('EmployeeSelected', { data: { id: {{ $employee->id }}, name: '{{ $employee->name }}' } })"
+                                        wire:click="$dispatch('employeeSelected', { data: { id: {{ $employee->id }}, name: '{{ $employee->name }}' } })"
                                         class="btn btn-sm btn-warning">
                                         Add
                                     </button>
@@ -181,74 +181,56 @@
                 </div>
 
                 <script>
-                window.addEventListener('EmployeeSelected', () => {
-                    let modalEl = document.getElementById('ModalLive');
-                    let modal = bootstrap.Modal.getInstance(modalEl);
-
-                    if (modal) {
-                        modal.hide();
-                    }
-
-                    // 👇 IMPORTANT: cleanup leftover backdrop
-                    setTimeout(() => {
-                        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                        document.body.classList.remove('modal-open');
-                        document.body.style.removeProperty('padding-right');
-                    }, 300);
-                });
-
-
-
  
-                document.addEventListener('livewire:init', () => {
-                    Livewire.on('close-calendar-modal', () => {
-                        let modalEl = document.getElementById('ModalCalender');
+                    document.addEventListener('livewire:init', () => {
+
+                        // Calendar modal
+                        Livewire.on('close-calendar-modal', () => {
+                            let modal = bootstrap.Modal.getInstance(document.getElementById('ModalCalender'));
+                            if (modal) modal.hide();
+                            cleanupModal();
+                        });
+
+                        // Leave modal
+                        Livewire.on('close-leave-modal', () => {
+                            let modal = bootstrap.Modal.getInstance(document.getElementById('ModalLeave'));
+                            if (modal) modal.hide();
+                            cleanupModal();
+                        });
+
+                        // Attendance modal
+                        Livewire.on('close-attendance-modal', () => {
+                            let modal = bootstrap.Modal.getInstance(document.getElementById('ModalAttendance'));
+                            if (modal) modal.hide();
+                            cleanupModal();
+                        });
+
+                        function cleanupModal() {
+                            setTimeout(() => {
+                                document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                                document.body.classList.remove('modal-open');
+                                document.body.style.removeProperty('padding-right');
+                            }, 300);
+                        }
+
+                    });
+ 
+                    window.addEventListener('employeeSelected', () => {
+                        let modalEl = document.getElementById('ModalLiveEmp');
                         let modal = bootstrap.Modal.getInstance(modalEl);
 
                         if (modal) {
                             modal.hide();
                         }
 
+                        // 👇 IMPORTANT: cleanup leftover backdrop
                         setTimeout(() => {
                             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
                             document.body.classList.remove('modal-open');
+                            document.body.style.removeProperty('padding-right');
                         }, 300);
                     });
-                });
-
-
-                document.addEventListener('livewire:init', () => {
-                    Livewire.on('close-leave-modal', () => {
-                        let modalEl = document.getElementById('ModalLeave');
-                        let modal = bootstrap.Modal.getInstance(modalEl);
-
-                        if (modal) modal.hide();
-
-                        setTimeout(() => {
-                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                            document.body.classList.remove('modal-open');
-                   
-                        }, 300);
-                    });
-                });
-
-
-                document.addEventListener('livewire:init', () => {
-                    Livewire.on('close-leave-modal', () => {
-                        let modalEl = document.getElementById('ModalAttendance');
-                        let modal = bootstrap.Modal.getInstance(modalEl);
-
-                        if (modal) modal.hide();
-
-                        setTimeout(() => {
-                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-                            document.body.classList.remove('modal-open');
-                   
-                        }, 300);
-                    });
-                });
-
-
+ 
 
 
             </script>

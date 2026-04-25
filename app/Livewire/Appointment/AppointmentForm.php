@@ -27,7 +27,7 @@ class AppointmentForm extends Component
     public $types = [];
 
  
-    #[On('EmployeeSelected')]
+    #[On('employeeSelected')]
     public function employeeSelected($data)
     {
         $this->employee = $data['name'];

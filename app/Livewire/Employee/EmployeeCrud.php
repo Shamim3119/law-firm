@@ -23,6 +23,7 @@ class EmployeeCrud extends Component
     public $page = 1;
     public $departmentFilter = '';
     public $designationFilter = '';
+    
     public $flag = 'false';
 
     public $lawyer = null;
@@ -47,11 +48,8 @@ class EmployeeCrud extends Component
     {
         $this->selectedEmployeeId = $employeeId;
 
-        $calendars = LeaveCalendar::all();
-
-        // if only one calendar exists → auto select it
-        if ($calendars->count() == 1) {
-            $this->calendar_id = $calendars->first()->id;
+        if ($this->calendars->count() == 1) {
+            $this->calendar_id = $this->calendars->first()->id;
         } else {
             $this->calendar_id = null;
         }
@@ -73,7 +71,7 @@ class EmployeeCrud extends Component
         $this->dispatch('close-calendar-modal');
 
         // refresh list
-        $this->resetPage();
+        $this->reset('selectedEmployeeId', 'calendar_id');
     }
 
 
