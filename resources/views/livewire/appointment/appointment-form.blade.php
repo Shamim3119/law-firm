@@ -28,7 +28,9 @@
 
                         <div class="mb-3">
                             <label>Appointment Type</label>
+                               
                             <select class="form-select" wire:model="type_id">
+                                   <option value="">Select Type</option>
                                     @foreach($types as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach

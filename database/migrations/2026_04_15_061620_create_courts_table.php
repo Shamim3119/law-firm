@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('courts', function (Blueprint $table) {
             $table->id();
-            $table->string('code_no');
+            $table->string('court_no');
             $table->string('name');    
             $table->string('chief_justice');
             $table->unsignedBigInteger('case_id'); 
+            $table->tinyInteger('inactive')->default(0);
             $table->timestamps();
         });
     }

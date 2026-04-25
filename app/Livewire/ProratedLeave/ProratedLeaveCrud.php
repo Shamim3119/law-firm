@@ -53,6 +53,7 @@ class ProratedLeaveCrud extends Component
         if (request()->has('tab')) {
             $this->activeTab = request('tab');
         }
+        
         if (request()->has('isModal')) {
             $this->isModal = true;
         }
@@ -159,5 +160,6 @@ class ProratedLeaveCrud extends Component
  
     }
 
+ 
 
 }

@@ -37,8 +37,6 @@ class LeaveScheduleCrud extends Component
     }
 
  
-
-
     public function selectSchedule($scheduleId)
     {
         if (!$this->employee_id) return;
@@ -92,29 +90,30 @@ class LeaveScheduleCrud extends Component
 
     public function store()
     {
-        $validatedData = $this->validate([
+        // ✅ define rules (NOT validate here)
+        $rules = [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-        ]);
+        ];
 
-        // dynamic validation for leave types
+        // ✅ dynamic rules
         foreach ($this->leave_values as $key => $value) {
             $rules["leave_values.$key"] = 'required|integer|min:0';
         }
-        $this->validate($rules);
+
+        // ✅ validate once
+        $validatedData = $this->validate($rules);
 
         if ($this->schedule_id) {
 
-            // ✅ UPDATE
+            // UPDATE
             $schedule = LeaveSchedule::find($this->schedule_id);
 
             if ($schedule) {
                 $schedule->update($validatedData);
 
-                // 👉 delete old details
                 LeaveScheduleDetail::where('schedule_id', $schedule->id)->delete();
 
-                // 👉 insert new details
                 foreach ($this->leave_values as $leave_type_id => $days) {
                     LeaveScheduleDetail::create([
                         'schedule_id'   => $schedule->id,
@@ -128,7 +127,7 @@ class LeaveScheduleCrud extends Component
 
         } else {
 
-            // ✅ CREATE
+            // CREATE
             $schedule = LeaveSchedule::create($validatedData);
 
             foreach ($this->leave_values as $leave_type_id => $days) {

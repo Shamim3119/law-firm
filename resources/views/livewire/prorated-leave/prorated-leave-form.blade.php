@@ -23,6 +23,7 @@
                         <div class="mb-3">
                             <label>Leave Schedule :</label>
                             <select class="form-select" wire:model="schedule_id">
+                                      <option selected value="">Select Schedule</option>
                                     @foreach($schedules as $schedule)
                                         <option selected value="{{ $schedule->id}}">{{ $schedule->name }}</option>
                                     @endforeach
@@ -32,7 +33,9 @@
                     
                         <div class="mb-3">
                             <label>Leave Type :</label>
+                            <option selected value="">Select Leave Type</option>
                             <select class="form-select" wire:model="leave_type_id">
+                                    <option selected value="">Select Leave Type</option>
                                     @foreach($leave_types as $leave_type)
                                         <option selected value="{{ $leave_type->id}}">{{ $leave_type->name }}</option>
                                     @endforeach

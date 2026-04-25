@@ -42,7 +42,7 @@ class Appointment extends Model
 
     public function status()
     {
-        return $this->belongsTo(AppointmentStatus::class);
+        return $this->belongsTo(Status::class);
     }
 
     public function appointment_type()

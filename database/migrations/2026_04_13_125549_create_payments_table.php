@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('remarks');  
+            $table->integer('type_id')->default(0); 
             $table->decimal('amount', 10, 2); 
-            $table->integer('type_id'); 
             $table->decimal('active_amount', 10, 2); 
             $table->decimal('next_amount', 10, 2);   
+            $table->string('remarks');  
             $table->unsignedBigInteger('case_id'); 
             $table->unsignedBigInteger('client_id');  
             $table->unsignedBigInteger('employee_id');  
-            $table->unsignedBigInteger('appoinment_id');  
+            $table->unsignedBigInteger('appointment_id');  
             $table->timestamps();
         });
     }
+ 
 
     /**
      * Reverse the migrations.

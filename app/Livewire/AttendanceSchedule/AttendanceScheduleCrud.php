@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\AttendanceSchedule;
 use Livewire\Attributes\On;
 use App\Models\Employee;
+use Carbon\Carbon;
+
 
 class AttendanceScheduleCrud extends Component
 {
@@ -60,7 +62,6 @@ class AttendanceScheduleCrud extends Component
         if (request()->has('isModal')) {
             $this->isModal = true;
         }
- 
     }
   
 
@@ -114,6 +115,8 @@ class AttendanceScheduleCrud extends Component
         $this->updateMode = false;
     }
 
+
+
     public function edit($id)
     {
         $schedule = AttendanceSchedule::findOrFail($id);
@@ -121,14 +124,19 @@ class AttendanceScheduleCrud extends Component
         $this->schedule_id = $id;
         $this->name = $schedule->name;
 
-        $this->start_time = $schedule->start_time;
-        $this->end_time = $schedule->end_time;
-        $this->interval_start = $schedule->interval_start;
-        $this->interval_end = $schedule->interval_end;
+        $this->start_time = Carbon::parse($schedule->start_time)->format('H:i');
+        $this->end_time = Carbon::parse($schedule->end_time)->format('H:i');
+        $this->interval_start = $schedule->interval_start 
+            ? Carbon::parse($schedule->interval_start)->format('H:i') 
+            : null;
+        $this->interval_end = $schedule->interval_end 
+            ? Carbon::parse($schedule->interval_end)->format('H:i') 
+            : null;
+
         $this->late_count = $schedule->late_count;
 
         $this->updateMode = true;
-        $this->dispatch('open-edit-box');
+      //  $this->dispatch('open-edit-box');
     }
 
     public function delete($id)
@@ -144,7 +152,12 @@ class AttendanceScheduleCrud extends Component
         $this->resetInputFields();
     }
 
-
+    public function create()
+    {
+        $this->resetInputFields();
+        $this->updateMode = true;
+ 
+    }
 
 
 }
