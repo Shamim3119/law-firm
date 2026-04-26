@@ -4,6 +4,7 @@ namespace App\Livewire\AttendanceInfo;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceInfoCrud extends Component
 {
@@ -14,6 +15,13 @@ class AttendanceInfoCrud extends Component
 
     public function render()
     {
-        return view('livewire.attendance-info.attendance-info-crud');
+        $attendance = DB::statement("CALL sp_select_attendance()");
+
+        return view('livewire.attendance-info.attendance-info-crud', [
+            'attendance' => $attendance,
+        ])->layout('layouts.app', [
+            'title' => 'Attendance',
+            'sub_title' => 'Attendance List'
+        ]);
     }
 }

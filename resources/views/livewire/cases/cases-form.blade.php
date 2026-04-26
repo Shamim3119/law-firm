@@ -46,7 +46,7 @@
                     <div class="card-footer">
                         <div class="m-3 d-flex justify-content-center">
                             <button type="submit" class="btn btn-success">{{ $case_id ? 'Update' : 'Create' }}</button>
-                            &nbsp;&nbsp;<a href="{{ route('cases.index') }}" class="btn btn-secondary">Back</a>
+                            &nbsp;&nbsp;<a href="{{ route('cases.index', ['tab' => 'cases', 'flag' => 'true']) }}" class="btn btn-secondary">Back</a>
                         </div> 
                     </div>
                 </div>

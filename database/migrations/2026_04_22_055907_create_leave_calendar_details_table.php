@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('year');
             $table->date('date');
             $table->string('day');
-            $table->tinyInteger('holy_day')->default(0);
+            $table->tinyInteger('holiday')->default(0);
             $table->tinyInteger('flexible_day')->default(0);
             $table->string('descriptions', 45)->nullable();
             $table->timestamps();
