@@ -22,7 +22,7 @@ class LeaveCalendarCrud extends Component
   
     public $holiday = [];
     public $flexible_day = [];
-    public $descriptions = [];
+    public $description = [];
 
     public $weekend_day;
     public $weekend_description;
@@ -37,7 +37,7 @@ class LeaveCalendarCrud extends Component
         foreach ($details as $detail) {
             $this->holiday[$detail->id] = $detail->holiday;
             $this->flexible_day[$detail->id] = $detail->flexible_day;
-            $this->descriptions[$detail->id] = $detail->descriptions;
+            $this->description[$detail->id] = $detail->description;
         }
     }
 
@@ -48,7 +48,7 @@ class LeaveCalendarCrud extends Component
             LeaveCalendarDetail::where('id', $detail->id)->update([
                 'holiday' => $this->holiday[$detail->id] ?? 0,
                 'flexible_day' => $this->flexible_day[$detail->id] ?? 0,
-                'descriptions' => $this->descriptions[$detail->id] ?? null,
+                'description' => $this->description[$detail->id] ?? null,
             ]);
         }
 
@@ -67,7 +67,7 @@ class LeaveCalendarCrud extends Component
             if ($detail->day === $this->weekend_day) {
 
                 $this->holiday[$detail->id] = 1;
-                $this->descriptions[$detail->id] = $this->weekend_description;
+                $this->description[$detail->id] = $this->weekend_description;
             }
         }
 
@@ -85,7 +85,7 @@ class LeaveCalendarCrud extends Component
             if (strtolower($detail->day) === strtolower($this->weekend_day)) {
     
                 $this->holiday[$detail->id] = 0;
-                $this->descriptions[$detail->id] = '';
+                $this->description[$detail->id] = '';
             }
         }
 
