@@ -100,7 +100,7 @@
 
                             <td>{{ $attendance->duration }}</td>
                             <td>{{ $attendance->status }}</td>
-                            <td>{{ $attendance->description }}</td>
+                            <td>{{ $attendance->descp }}</td>
 
                     </tr>
                     @empty

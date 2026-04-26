@@ -24,7 +24,7 @@ class AttendanceInfoCrud extends Component
 
         foreach ($attendances as $a) {
 
-            $key = $a->employee_id . '_' . $a->att_date;
+            $key = $a->employee_id . '_' . $a->date;
 
             if ($a->in_time) {
                 $this->in_times[$key] = \Carbon\Carbon::parse($a->in_time)->format('H:i');
@@ -39,14 +39,14 @@ class AttendanceInfoCrud extends Component
 
 
 
-public function render()
-{
-    $attendances = DB::select("CALL sp_select_attendance()");
+    public function render()
+    {
+        $attendances = DB::select("CALL sp_select_attendance()");
 
-    return view('livewire.attendance-info.attendance-info-crud', [
-        'attendances' => $attendances,
-    ]);
-}
+        return view('livewire.attendance-info.attendance-info-crud', [
+            'attendances' => $attendances,
+        ]);
+    }
 
     public function updateAttendance($date, $in_out_flag, $employee_id)
     {
@@ -81,7 +81,8 @@ public function render()
 
         $this->dispatch('show-toast', message: 'Successfully Updated');
 
-        $this->dispatch('$refresh');
+        //$this->dispatch('$refresh');
+        $this->dispatch('$refresh')->self();
     }
 
 }

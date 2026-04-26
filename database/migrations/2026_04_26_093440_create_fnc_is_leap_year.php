@@ -43,6 +43,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fnc_is_leap_year');
+ 
+        DB::unprepared("DROP FUNCTION IF EXISTS fnc_is_leap_year");
     }
 };
