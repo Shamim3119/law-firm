@@ -10,8 +10,8 @@
 
         @include('livewire.attendance-schedule.attendance-schedule-form')
     @endif
- 
-    <div style='opacity:1' id='boxView'  class="card card-primary card-outline mb-4">
+
+    <div @if($updateMode) style="display:none;" @endif id='boxView' class="card card-primary card-outline mb-4">
         <div class="card-header">
             <div class="card-title">{{ ucfirst($activeTab) }} List</div>
         </div>
@@ -76,12 +76,5 @@
     </div>
  
     {!! MyHelper::get_toast_dispatch() !!}
-
-    <script> 
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('open-edit-box', () => {
-                fadeToggle('btnNew', 'boxNew', 'boxView');
-            });
-        });
-    </script>
+    
 </div>

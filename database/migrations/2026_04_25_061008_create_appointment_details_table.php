@@ -13,14 +13,18 @@ return new class extends Migration
     {
         Schema::create('appointment_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('appointment_id')->unsigned();
-            $table->date('appointment_date');
-            $table->time('appointment_start_time');
-            $table->time('appointment_end_time');
+            $table->unsignedBigInteger('appointment_id')->unsigned();
+            $table->date('start_date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('details')->nullable();
             $table->timestamps();
+            $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade');  
+
         });
     }
 
+ 
     /**
      * Reverse the migrations.
      */

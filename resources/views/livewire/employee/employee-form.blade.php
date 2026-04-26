@@ -41,6 +41,7 @@
                         <div class="mb-3">
                             <label>Department :</label>
                             <select class="form-select" wire:model="department_id">
+                                <option selected value="">Select Department</option>
                                     @foreach($departments as $dept)
                                         <option value="{{ $dept->id }}">{{ $dept->name }}</option>
                                     @endforeach
@@ -51,6 +52,7 @@
                         <div class="mb-3">
                             <label>Designation :</label>
                             <select class="form-select" wire:model="designation_id">
+                                <option selected value="">Select Designation</option>
                                     @foreach($designations as $designation)
                                         <option value="{{ $designation->id }}">{{ $designation->name }}</option>
                                     @endforeach

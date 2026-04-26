@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 
 return new class extends Migration
 {
@@ -13,13 +14,23 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('name');
-            $table->string('phone')->unique();
-            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('email');
             $table->integer('department_id')->unsigned();
             $table->integer('designation_id')->unsigned();
+            $table->date('joining_date')->nullable();
+            $table->integer('attendance_id')->unsigned()->default(0);
+            $table->integer('leave_id')->unsigned()->default(0);
+            $table->integer('calendar_id')->unsigned()->default(0); 
             $table->timestamps();
         });
+
+ 
+     //   Artisan::call('db:seed', [
+      //      '--class' => 'EmployeeProcedureSeeder'
+      //  ]);
     }
 
     /**

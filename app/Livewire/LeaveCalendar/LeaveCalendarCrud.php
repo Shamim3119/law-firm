@@ -142,4 +142,10 @@ class LeaveCalendarCrud extends Component
         $this->updateMode = true;
  
     }
+
+    public function cancel()
+    {
+        $this->updateMode = false;
+        $this->resetInputFields();
+    }
 }

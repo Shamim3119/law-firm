@@ -19,9 +19,12 @@ return new class extends Migration
             $table->string('day');
             $table->tinyInteger('holy_day')->default(0);
             $table->tinyInteger('flexible_day')->default(0);
+            $table->string('descriptions', 45)->nullable();
             $table->timestamps();
         });
     }
+
+ 
 
     /**
      * Reverse the migrations.

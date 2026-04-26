@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hearings', function (Blueprint $table) {
             $table->id();
-            $table->integer('court_id'); 
+            $table->unsignedBigInteger('court_id');
             $table->date('hearing_date');
             $table->time('hearing_time');
             $table->unsignedBigInteger('case_id'); 

@@ -73,7 +73,7 @@
                             {!! \App\Helpers\MyHelper::get_status_button(
                                 $appointment->status->id,
                                 $appointment->id,
-                                $appointment->status->name
+                                $appointment->status->appointment_status
                             ) !!}
                         </td>
                          <td  style='text-align:center;'>
@@ -88,7 +88,7 @@
                             </button>
 
                             <button 
-                                @disabled($appointment->status->id == 1)
+                                @disabled($appointment->status->id > 2)
                                 type="button"
                                 wire:click="$dispatch('setAppointmentId', { id: {{ $appointment->id }} })"
                                 data-bs-toggle="modal" 

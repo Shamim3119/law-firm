@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 return new class extends Migration
 {
@@ -19,7 +21,29 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('address', 200)->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->boolean('inactive')->default(false);
+            $table->string('image')->nullable();
+            $table->unsignedInteger('business_id')->default(1); 
         });
+
+
+        DB::table('users')->insert([
+            'id' => 1,
+            'name' => 'John Doe',
+            'email' => 'admin@example.com',
+            'email_verified_at' => null,
+            'password' => '$2y$12$BOoCBskK2wOE1Tt6ZIThR.34ChYvs6vW0KGCd/X1FfpmYJBvrk3pO',
+            'remember_token' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'address' => 'Dhaka',
+            'phone' => '01911638946',
+            'inactive' => 0,
+            'image' => 'profile/7E1iObBxrlLt2dJGcXtcPLosIiCkgCpWGh4jvXyI.jpg', // ✅ fixed column name
+            'business_id' => 1, // ✅ fixed column name
+        ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
@@ -35,6 +59,9 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+
+
     }
 
     /**

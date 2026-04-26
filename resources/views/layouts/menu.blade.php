@@ -81,7 +81,7 @@
                 </a>
               </li>
 
-              <li class="nav-item {{ request()->routeIs('leave-schedule.*') || request()->routeIs('prorated_leave.*') || request()->routeIs('leave-calendar.*') ? 'menu-open' : '' }}">
+              <li class="nav-item {{ request()->routeIs('leave-schedule.*') || request()->routeIs('prorated-leave.*') || request()->routeIs('leave-calendar.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                   <i class="nav-icon bi bi-brightness-alt-high"></i>
                   <p>
@@ -135,7 +135,7 @@
 
 
 
-              <li class="nav-item {{ request()->routeIs('attendance.*') ? 'menu-open' : '' }}">
+              <li class="nav-item {{ request()->routeIs('attendance-info.*') || request()->routeIs('attendance-status.*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                   <i class="nav-icon bi bi-award-fill"></i>
                   <p>
@@ -145,13 +145,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('attendance-info.index', ['tab' => 'attendance-info', 'flag' => false]) }}" class="nav-link active">
+                    <a href="{{ route('attendance-info.index', ['tab' => 'attendance-info', 'flag' => false]) }}" class="nav-link {{ request('tab') == 'attendance-info' ? 'active' : '' }}">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Attendance Info</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('attendance-status.index', ['tab' => 'attendance-status', 'flag' => false]) }}" class="nav-link active">
+                    <a href="{{ route('attendance-status.index', ['tab' => 'attendance-status', 'flag' => false]) }}" class="nav-link {{ request('tab') == 'attendance-status' ? 'active' : '' }}">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Attendance Status</p>
                     </a>
@@ -160,7 +160,7 @@
               </li>
 
 
-              <li class="nav-item {{ request()->routeIs('leave.*') ? 'menu-open' : '' }}">
+              <li class="nav-item {{ request()->routeIs('leave-info.*') || request()->routeIs('leave-status.*')  ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link active">
                   <i class="nav-icon bi bi-body-text"></i>
                   <p>
@@ -170,13 +170,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('leave-info.index', ['tab' => 'leave-info', 'flag' => true]) }}" class="nav-link active">
+                    <a href="{{ route('leave-info.index', ['tab' => 'leave-info', 'flag' => true]) }}" class="nav-link {{ request('tab') == 'leave-info' ? 'active' : '' }}">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Leave Info</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('leave-status.index', ['tab' => 'leave-status', 'flag' => true]) }}" class="nav-link active">
+                    <a href="{{ route('leave-status.index', ['tab' => 'leave-status', 'flag' => true]) }}" class="nav-link {{ request('tab') == 'leave-status' ? 'active' : '' }}">
                       <i class="nav-icon bi bi-circle"></i>
                       <p>Leave Status</p>
                     </a>
