@@ -36,9 +36,6 @@
     @include('livewire.client.client-form')
 @endif
 
-
-
-
     <div @if($updateMode) style="display:none;" @endif id='boxView' class="card card-primary card-outline mb-4">
         <div class="card-header">
             <div class="card-title">{{ ucfirst($activeTab) }} List</div>
@@ -112,7 +109,7 @@
                             <td>{{ $client->name }}</td>
                             <td>{{ $client->phone }}</td>
                             <td>{{ $client->email }}</td>
-                            <td align='center'>
+                            <td style='text-align:center;'>
                         @if($flag == 'true')
                                 <button   
                                     wire:click="edit({{ $client->id }})"
@@ -161,7 +158,7 @@
                         document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
                         document.body.classList.remove('modal-open');
                         document.body.style.removeProperty('padding-right');
-                    }, 300);
+                    }, 500);
                 });
             </script>
             {!! MyHelper::get_toast_dispatch() !!}

@@ -101,15 +101,15 @@
                     <tbody>
                         @forelse($employees as $employee)
                         <tr wire:key="employee-{{ $employee->id }}">
-                            <td>{{ $loop->iteration  }}</td>
-                            <td>{{ $employee->code }}</td>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->department->name ?? '-' }}</td>
-                            <td>{{ $employee->designation->name ?? '-' }}</td>
-  
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $loop->iteration  }}</td>
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->code }}</td>
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->name }}</td>
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->department->name ?? '-' }}</td>
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->designation->name ?? '-' }}</td>
+
                         @if($flag == 'true')
-                            <td>{{ $employee->email }}</td>
-                            <td>{{ $employee->phone }}</td>
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->email }}</td>
+                            <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->phone }}</td>
                             <td style='text-align:center;'>
                                 <button 
                                 wire:click="$dispatch('setEmployeeId', { data: { id: {{ $employee->id }} } })"
@@ -230,22 +230,54 @@
                             document.body.style.removeProperty('padding-right');
                         }, 300);
                     });
- 
 
 
             </script>
-
 
             {!! MyHelper::get_toast_dispatch() !!}
 
         </div>
     </div>
 
-    <script> 
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('open-edit-box', () => {
-                fadeToggle('btnNew', 'boxNew', 'boxView');
-            });
-        });
-    </script>
+
+
+
+
+
+<div class="modal fade modal-lg" id="ModalLeave" tabindex="-1" aria-labelledby="ModalLeaveLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLeaveLabel">Apply Leave Schedule</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-3">
+ 
+                @livewire('leave-schedule.leave-schedule-crud')
+            </div>                   
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-lg" id="ModalAttendance" tabindex="-1" aria-labelledby="ModalAttendanceLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalAttendanceLabel">Apply Attendance Schedule</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-3">
+ 
+                @livewire('attendance-schedule.attendance-schedule-crud')
+            </div>                   
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
 </div>

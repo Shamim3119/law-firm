@@ -30,8 +30,11 @@
     </div>
 
 
-
+<!--
 <div class="modal fade" id="ModalWeekend" tabindex="-1" aria-labelledby="ModalWeekendLabel" style="display: none;" aria-hidden="true">
+-->
+<div class="modal fade" id="ModalWeekend" tabindex="-1" wire:ignore.self>
+
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

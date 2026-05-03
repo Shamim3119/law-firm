@@ -130,7 +130,7 @@
                                     <td>{{ $parameter->name }}</td>
                                     <td class="{{ $parameter->inactive ? 'text-danger' : '' }}" style="text-align:center">{{ $parameter->inactive == 0 ? 'Active' : 'Inactive' }}</td>
 
-                                    <td style="text-align:center">
+                                    <td style="text-align:center;width:150px;">
                                         <button   
                                             wire:click="edit({{ $parameter->id }})"
                                             class="btn btn-primary btn-sm">

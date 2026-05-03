@@ -29,8 +29,10 @@ class EmployeeCrud extends Component
     public $lawyer = null;
     public $updateMode = false;
     public $employee_id;
-    public $name, $phone, $email, $department_id, $designation_id;
-
+    public $name, $personal_phone, $personal_email, $department_id, $designation_id;
+    public $inactive = false;   
+    public $enroll_id, $father_name, $mother_name, $date_of_birth, $joining_date, $career_start;
+          
     public $departments = [];
     public $designations = [];
 
@@ -156,7 +158,7 @@ class EmployeeCrud extends Component
         if ($this->search) {
             $query->where(function ($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')
-                ->orWhere('email', 'like', '%' . $this->search . '%')
+                ->orWhere('personal_email', 'like', '%' . $this->search . '%')
                 ->orWhere('code', 'like', '%' . $this->search . '%')
                 ->orWhereHas('department', function ($q2) {
                     $q2->where('name', 'like', '%' . $this->search . '%');
@@ -206,10 +208,17 @@ class EmployeeCrud extends Component
             $employee = Employee::findOrFail($id);
             $this->employee_id = $employee->id;
             $this->name = $employee->name;
-            $this->phone = $employee->phone;
-            $this->email = $employee->email;
+            $this->personal_phone = $employee->personal_phone;
+            $this->personal_email = $employee->personal_email;
             $this->department_id = $employee->department_id;
             $this->designation_id = $employee->designation_id;
+            $this->inactive = $employee->inactive;
+            $this->enroll_id = $employee->enroll_id;
+            $this->father_name = $employee->father_name;
+            $this->mother_name = $employee->mother_name;
+            $this->date_of_birth = $employee->date_of_birth;
+            $this->joining_date = $employee->joining_date;
+            $this->career_start = $employee->career_start;
             $this->updateMode = true;
           //  $this->dispatch('open-edit-box');
         }
@@ -219,20 +228,38 @@ class EmployeeCrud extends Component
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'email' => 'required|email',
+            'personal_phone' => 'required|string|max:255',
+            'personal_email' => 'required|email',
             'department_id' => 'required|integer',
             'designation_id' => 'required|integer',
+            'inactive' => 'required|boolean',
+            'enroll_id' => 'required|string|max:255',
+            'father_name' => 'required|string|max:255',
+            'mother_name' => 'required|string|max:255',
+            /*
+            'date_of_birth' => 'required|date',
+            'joining_date' => 'required|date',
+            'career_start' => 'nullable|date',
+            */
         ]);
     
         if ($this->employee_id) {
             $employee = Employee::findOrFail($this->employee_id);
             $employee->update([
                 'name' => $this->name,
-                'phone' => $this->phone,
-                'email' => $this->email,
+                'personal_phone' => $this->personal_phone,
+                'personal_email' => $this->personal_email,
                 'department_id' => $this->department_id,
                 'designation_id' => $this->designation_id,
+                'inactive' => $this->inactive,
+                'enroll_id' => $this->enroll_id,
+                'father_name' => $this->father_name,
+                'mother_name' => $this->mother_name,
+                /*
+                'date_of_birth' => $this->date_of_birth,
+                'joining_date' => $this->joining_date,
+                'career_start' => $this->career_start,
+                */
             ]);
         }else{
             
@@ -240,16 +267,26 @@ class EmployeeCrud extends Component
 
             $employee = Employee::create([
                 'name' => $this->name,
-                'phone' => $this->phone,
-                'email' => $this->email,
+                'personal_phone' => $this->personal_phone,
+                'personal_email' => $this->personal_email,
                 'department_id' => $this->department_id,
                 'designation_id' => $this->designation_id,
                 'code' => $empcode,
+                'inactive' => $this->inactive,
+                'enroll_id' => $this->enroll_id,
+                'father_name' => $this->father_name,
+                'mother_name' => $this->mother_name,
+                /*
+                'date_of_birth' => $this->date_of_birth,
+                'joining_date' => $this->joining_date,
+                'career_start' => $this->career_start,
+                */  
             ]);
         }
  
+   
         $this->dispatch('show-toast', message: $this->employee_id ? 'Employee Updated Successfully' : 'Employee Created Successfully');
-
+     
         $this->resetInputFields();
 
         $this->updateMode = false;
@@ -260,8 +297,15 @@ class EmployeeCrud extends Component
     {
         $this->employee_id = null;
         $this->name = '';
-        $this->phone = '';
-        $this->email = '';
+        $this->personal_phone = '';
+        $this->personal_email = '';
+        $this->inactive = false;
+        $this->enroll_id = '';
+        $this->father_name = '';
+        $this->mother_name = '';
+        $this->date_of_birth = '';
+        $this->joining_date = '';
+        $this->career_start = '';
     }
 
 

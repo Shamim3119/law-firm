@@ -10,17 +10,17 @@
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-4">
-                            <label>Appointment Date</label>
+                            <label>Date</label>
                             <input type="text" id="date" class="form-control datepicker" placeholder="Select date" wire:model="start_date">
                             @error('start_date') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="col-4">
-                            <label>Appointment Start Time</label>
+                            <label>Start Time</label>
                             <input type="time" class="form-control" wire:model="start_time">
                             @error('start_time') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="col-4">
-                            <label>Appointment End Time</label>
+                            <label>End Time</label>
                             <input type="time" class="form-control" wire:model="end_time">
                             @error('end_time') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
@@ -79,21 +79,21 @@
 
     <script>
  
-    const modal = document.getElementById('ModalLive');
+        const modal = document.getElementById('ModalLive');
 
         modal.addEventListener('hidden.bs.modal', function () {
             Livewire.dispatch('refreshAppointments');
         });
 
-                        flatpickr("#date", {
-                    dateFormat: "Y-m-d"
-                });
-            
-                flatpickr("#datetime", {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    time_24hr: true
-                });
+        flatpickr("#date", {
+            dateFormat: "Y-m-d"
+        });
+    
+        flatpickr("#datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true
+        });
 
  
     </script>

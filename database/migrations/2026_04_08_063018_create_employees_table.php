@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('email');
             $table->integer('department_id')->unsigned();
             $table->integer('designation_id')->unsigned();
-            $table->date('joining_date')->nullable();
             $table->integer('attendance_id')->unsigned()->default(0);
             $table->integer('leave_id')->unsigned()->default(0);
             $table->integer('calendar_id')->unsigned()->default(0); 
+            $table->date('joining_date')->nullable();
             $table->timestamps();
         });
 

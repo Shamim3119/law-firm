@@ -25,12 +25,20 @@
                 Update
             </button>
              &nbsp;
+
+             <button class="mb-3 btn btn-sm btn-info"
+                    data-bs-toggle="modal"
+                    data-bs-target="#ModalWeekend">
+                Apply weekend
+            </button>
+<!--
             <button class="mb-3 btn btn-sm btn-info"
                     wire:click="openWeekendModal"
                     data-bs-toggle="modal"
                     data-bs-target="#ModalWeekend">
                 Apply weekend
             </button>
+-->
              &nbsp;
             <a  href="{{ route('pdf') }}" target="_blank" class="mb-3 btn btn-sm btn-danger" >
                 Print Calendar
@@ -74,7 +82,7 @@
                                     <td>{{ $detail->day }}</td>
                                     <td><input type="checkbox" wire:model="holiday.{{ $detail->id }}"></td>
                                     <td><input type="checkbox" wire:model="flexible_day.{{ $detail->id }}"></td>
-                                    <td><input type="text" class="form-control" wire:model.defer="descriptions.{{ $detail->id }}"></td>
+                                    <td><input type="text" class="form-control" wire:model.defer="description.{{ $detail->id }}"></td>
                        
                                 </tr>
                             @endforeach

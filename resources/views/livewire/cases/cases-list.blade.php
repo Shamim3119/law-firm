@@ -1,7 +1,5 @@
 <div> <!-- single root -->
-
     <ul class="nav nav-tabs">
-
         <li class="nav-item">
             <a 
             class="nav-link {{ $activeTab == 'clients' ? 'active' : '' }}" 
@@ -169,12 +167,14 @@
         </div> 
     </div>
 
+ 
     <script>
         const modal = document.getElementById('MainModal');
             modal.addEventListener('hidden.bs.modal', function () {
                 Livewire.dispatch('refreshCases');
             });
     </script>
+ 
 
     {!! MyHelper::get_toast_dispatch() !!}
 

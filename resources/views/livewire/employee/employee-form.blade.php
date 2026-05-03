@@ -1,6 +1,6 @@
 <div> <!-- single root -->
     <div class='row'>
-        <div class='col-6'>
+        <div class='col-12'>
 
             <button 
                 wire:click="create"
@@ -20,44 +20,73 @@
                     </div> 
                     <div class="card-body m-3">
 
-                        <div class="mb-3">
-                            <label>Name :</label>
-                            <input type="text" class="form-control" wire:model="name" >
-                            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" wire:model="inactive">
+                            <label class="form-check-label" for="exampleCheck1">Inactive</label>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label>Enroll ID :</label>
+                                <input type="text" class="form-control" wire:model="enroll_id" >
+                                @error('enroll_id') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-6">
+                                <label>Name :</label>
+                                <input type="text" class="form-control" wire:model="name" >
+                                @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label>Phone :</label>
-                            <input type="text" class="form-control" wire:model="phone">
-                            @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label>Father's Name :</label>
+                                <input type="text" class="form-control" wire:model="father_name" >
+                                @error('father_name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="col-6">
+                                <label>Mother's Name :</label>
+                                <input type="text" class="form-control" wire:model="mother_name" >
+                                @error('mother_name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label>Phone :</label>
+                                <input type="text" class="form-control" wire:model="personal_phone">
+                                @error('personal_phone') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+
+
+                            <div class="col-6">
+                                <label>Email :</label>
+                                <input type="email" class="form-control" wire:model="personal_email">
+                                @error('personal_email') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label>Email :</label>
-                            <input type="email" class="form-control" wire:model="email">
-                            @error('email') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label>Department :</label>
+                                <select class="form-select" wire:model="department_id">
+                                    <option selected value="">Select Department</option>
+                                        @foreach($departments as $dept)
+                                            <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                        @endforeach
+                                </select>
+                                @error('department_id') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
 
-                        <div class="mb-3">
-                            <label>Department :</label>
-                            <select class="form-select" wire:model="department_id">
-                                <option selected value="">Select Department</option>
-                                    @foreach($departments as $dept)
-                                        <option value="{{ $dept->id }}">{{ $dept->name }}</option>
-                                    @endforeach
-                            </select>
-                            @error('department_id') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Designation :</label>
-                            <select class="form-select" wire:model="designation_id">
-                                <option selected value="">Select Designation</option>
-                                    @foreach($designations as $designation)
-                                        <option value="{{ $designation->id }}">{{ $designation->name }}</option>
-                                    @endforeach
-                            </select>
-                            @error('designation_id') <span class="text-danger">{{ $message }}</span> @enderror
+                            <div class="col-6">
+                                <label>Designation :</label>
+                                <select class="form-select" wire:model="designation_id">
+                                    <option selected value="">Select Designation</option>
+                                        @foreach($designations as $designation)
+                                            <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                                        @endforeach
+                                </select>
+                                @error('designation_id') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -117,41 +146,5 @@
 
 
 
-<div class="modal fade modal-lg" id="ModalLeave" tabindex="-1" aria-labelledby="ModalLeaveLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ModalLeaveLabel">Apply Leave Schedule</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body m-3">
- 
-                @livewire('leave-schedule.leave-schedule-crud')
-            </div>                   
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade modal-lg" id="ModalAttendance" tabindex="-1" aria-labelledby="ModalAttendanceLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ModalAttendanceLabel">Apply Attendance Schedule</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body m-3">
- 
-                @livewire('attendance-schedule.attendance-schedule-crud')
-            </div>                   
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 

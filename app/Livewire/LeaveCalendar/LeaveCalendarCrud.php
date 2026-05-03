@@ -91,13 +91,19 @@ class LeaveCalendarCrud extends Component
 
         $this->dispatch('show-toast', message: 'Weekend removed successfully.');
     }
+    public function mount()
+    {
+        $this->weekend_day = 'Friday';
+        $this->weekend_description = '';
+    }
 
+/*
     public function openWeekendModal()
     {
         $this->weekend_day = 'Friday'; // default
         $this->weekend_description = '';
     }
-
+*/
     public function render()
     {
 
