@@ -71,6 +71,26 @@
                     </a>
                 </li>
 
+
+                <li class="nav-item">
+                    <a href="{{ route('parameter.index', ['tab' => 'bank-type']) }}" class="nav-link {{ request('tab') == 'bank-type' ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Bank Type</p>
+                    </a>
+                </li>
+
+
+
+ 
+
+                <li class="nav-item">
+                    <a href="{{ route('bank-operator.index', ['tab' => 'bank-operator']) }}" class="nav-link {{ request('tab') == 'bank-operator' ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-circle"></i>
+                      <p>Bank Operator</p>
+                    </a>
+                </li>
+
+
                 </ul>
               </li>
 
@@ -212,6 +232,40 @@
                       <a href="{{ route('cases.index', ['tab' => 'cases', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'cases' ? 'active' : '' }}">
                         <i class="nav-icon bi bi-circle"></i>
                         <p>Cases</p>
+                      </a>
+                  </li>
+
+                </ul>
+              </li>
+
+
+              <li class="nav-item {{ request()->routeIs('accounts.*') || request()->routeIs('journals.*') || request()->routeIs('ledger.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link active">
+                  <i class="nav-icon bi bi-currency-dollar"></i>
+                  <p>
+                    Accounting
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                      <a href="{{ route('accounts.index', ['tab' => 'accounts', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'accounts' ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-circle"></i>
+                        <p>Accounts</p>
+                      </a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a href="{{ route('journals.index', ['tab' => 'journals', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'journals' ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-circle"></i>
+                        <p>Journals</p>
+                      </a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a href="{{ route('ledger.index', ['tab' => 'ledger', 'flag' => 'true']) }}" class="nav-link {{ request('tab') == 'ledger' ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-circle"></i>
+                        <p>Ledger</p>
                       </a>
                   </li>
 

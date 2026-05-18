@@ -148,6 +148,8 @@ class EmployeeCrud extends Component
 
         $query = Employee::with(['department', 'designation']); // base query
 
+
+ 
         if (!empty($this->lawyer)) {
             $query->whereHas('designation', function ($q) {
                 $q->where('name', $this->lawyer);

@@ -96,7 +96,7 @@
                                 @if ($sortDirection === 'asc') ↑ @else ↓ @endif
                             @endif
                         </th>
-
+                        <th style='text-align:center;'>Account</th>
                         <th style='text-align:center;'>Action</th>
                     </tr>
                 </thead>
@@ -109,6 +109,15 @@
                             <td>{{ $client->name }}</td>
                             <td>{{ $client->phone }}</td>
                             <td>{{ $client->email }}</td>
+                            <td style='text-align:center;'>
+                                <button 
+                                    wire:click="$dispatch('setRefId', { id: {{ $client->id }}, type: 2, code: '{{ $client->code }}' })"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#ModalAccount"
+                                    class="btn btn-sm btn-{{ $client->account_count == 0 ? 'danger' : 'success' }}">
+                                    {{ 'Account' }}
+                                </button>
+                            </td>
                             <td style='text-align:center;'>
                         @if($flag == 'true')
                                 <button   
@@ -166,11 +175,42 @@
     </div>
     <script> 
         document.addEventListener('livewire:init', () => {
+
             Livewire.on('open-edit-box', () => {
                 fadeToggle('btnNew', 'boxNew', 'boxView');
             });
+
+            // Account modal
+            Livewire.on('close-account-modal', () => {
+                let modal = bootstrap.Modal.getInstance(document.getElementById('ModalAccount'));
+                if (modal) modal.hide();
+                cleanupModal();
+            });
+
         });
     </script>
+
+
+
+    <div class="modal fade modal-lg" id="ModalAccount" tabindex="-1" aria-labelledby="ModalAccountLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalAccountLabel">Apply Account Info</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-3">
+    
+                    @livewire('account-info.account-info-crud')
+                </div>                   
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 

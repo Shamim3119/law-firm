@@ -15,4 +15,16 @@ class Business extends Model
                             'web',
                             'logo',
                         ];
+
+    
+    public function accountInfos()
+    {
+        return $this->hasMany(AccountInfo::class, 'ref_id', 'id')
+                ->where('ref_type_id', 3);
+    }
+ 
+    public function getAccountCountAttribute()
+    {
+        return $this->accountInfos()->count();
+    }
 }

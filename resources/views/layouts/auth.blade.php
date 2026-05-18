@@ -9,14 +9,14 @@
 </head>
 <body class="bg-light">
 
-    <div class="d-flex justify-content-center align-items-center" style="height:100vh;">
+    <div class="d-flex justify-content-center align-items-center" >
  
             {{ $slot }}
       
     </div>
 
     @livewireScripts
-    <link rel="javascript" href="{{ asset('login/form-utils.js') }}">
-    <link rel="javascript" href="{{ asset('login/script.js') }}">
+    <script src="{{ asset('login/form-utils.js') }}"></script>
+    <script src="{{ asset('login/script.js') }}"></script>
 </body>
 </html>

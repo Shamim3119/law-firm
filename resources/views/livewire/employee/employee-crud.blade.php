@@ -88,6 +88,7 @@
                             <th wire:click="sortBy('phone')" style="cursor:pointer;">
                                 Phone @include('sort-icon', ['field' => 'phone'])
                             </th>
+                            <th style='text-align:center;'>Account</th>
                             <th style='text-align:center;'>Attendance</th>
                             <th style='text-align:center;'>Leave</th>
                             <th style='text-align:center;'>Calender</th>
@@ -110,6 +111,17 @@
                         @if($flag == 'true')
                             <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->email }}</td>
                             <td class="{{ $employee->inactive ? 'text-danger' : '' }}" >{{ $employee->phone }}</td>
+
+
+                            <td style='text-align:center;'>
+                                <button 
+                                wire:click="$dispatch('setRefId', { id: {{ $employee->id }}, type: 1, code: '{{ $employee->code }}' })"
+                                data-bs-toggle="modal"
+                                data-bs-target="#ModalAccount"
+                                class="btn btn-sm btn-{{ $employee->account_count == 0 ? 'danger' : 'success' }}">{{ 'Account'}}
+                                </button>
+                            </td>
+
                             <td style='text-align:center;'>
                                 <button 
                                 wire:click="$dispatch('setEmployeeId', { data: { id: {{ $employee->id }} } })"
@@ -121,10 +133,7 @@
                             <td style='text-align:center;'>
       
                                 <button
-                   
                                     wire:click="$dispatch('setEmployeeId', { data: { id: {{ $employee->id }} } })"
-
-           
                                     data-bs-toggle="modal"
                                     data-bs-target="#ModalLeave"
                                     class="btn btn-sm btn-{{ $employee->leave_id == 0 ? 'danger' : 'success' }}">
@@ -205,6 +214,17 @@
                             cleanupModal();
                         });
 
+
+                        // Account modal
+                        Livewire.on('close-account-modal', () => {
+                            let modal = bootstrap.Modal.getInstance(document.getElementById('ModalAccount'));
+                            if (modal) modal.hide();
+                            cleanupModal();
+                        });
+
+
+    
+
                         function cleanupModal() {
                             setTimeout(() => {
                                 document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
@@ -232,7 +252,7 @@
                     });
 
 
-            </script>
+                </script>
 
             {!! MyHelper::get_toast_dispatch() !!}
 
@@ -241,43 +261,59 @@
 
 
 
-
-
-
-<div class="modal fade modal-lg" id="ModalLeave" tabindex="-1" aria-labelledby="ModalLeaveLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ModalLeaveLabel">Apply Leave Schedule</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body m-3">
- 
-                @livewire('leave-schedule.leave-schedule-crud')
-            </div>                   
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <div class="modal fade modal-lg" id="ModalLeave" tabindex="-1" aria-labelledby="ModalLeaveLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLeaveLabel">Apply Leave Schedule</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-3">
+    
+                    @livewire('leave-schedule.leave-schedule-crud')
+                </div>                   
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade modal-lg" id="ModalAttendance" tabindex="-1" aria-labelledby="ModalAttendanceLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ModalAttendanceLabel">Apply Attendance Schedule</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body m-3">
- 
-                @livewire('attendance-schedule.attendance-schedule-crud')
-            </div>                   
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <div class="modal fade modal-lg" id="ModalAttendance" tabindex="-1" aria-labelledby="ModalAttendanceLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalAttendanceLabel">Apply Attendance Schedule</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-3">
+    
+                    @livewire('attendance-schedule.attendance-schedule-crud')
+                </div>                   
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
- 
+
+
+    <div class="modal fade modal-lg" id="ModalAccount" tabindex="-1" aria-labelledby="ModalAccountLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalAccountLabel">Apply Account Info</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-3">
+    
+                    @livewire('account-info.account-info-crud')
+                </div>                   
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

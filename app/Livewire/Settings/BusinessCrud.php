@@ -11,9 +11,10 @@ class BusinessCrud extends Component
     use WithFileUploads;
 
     public $business;
+    public $updateMode = false;
     public $activeTab = 'bussiness';
 
-    public $name, $email, $phone, $address, $web;
+    public $id, $code, $name, $email, $phone, $address, $web;
     public $logo;
 
     // ✅ Load data once
@@ -21,11 +22,18 @@ class BusinessCrud extends Component
     {
         $this->business = Business::where('id', 1)->first();
 
+        $this->id = $this->business->id;
+        $this->code = $this->business->code;
         $this->name = $this->business->name;
         $this->email = $this->business->email;
         $this->phone = $this->business->phone;
         $this->address = $this->business->address;
         $this->web = $this->business->web;
+    }
+
+    public function edit($id)
+    {
+        $this->updateMode = true;
     }
 
     public function save()

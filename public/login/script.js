@@ -184,6 +184,7 @@ class MaterialLoginForm {
             return;
         }
         
+        /*
         this.setLoading(true);
         
         try {
@@ -197,6 +198,7 @@ class MaterialLoginForm {
         } finally {
             this.setLoading(false);
         }
+        */
     }
     
     async handleSocialLogin(provider, button) {

@@ -25,6 +25,8 @@ class Employee extends Model
                             'career_start',
                             ]; 
 
+ 
+
     public function department()
     {
         return $this->belongsTo(Parameter::class, 'department_id');
@@ -48,5 +50,17 @@ class Employee extends Model
     public function calendar()
     {
         return $this->belongsTo(LeaveCalendar::class, 'calendar_id');
+    }
+
+
+    public function accountInfos()
+    {
+        return $this->hasMany(AccountInfo::class, 'ref_id', 'id')
+                ->where('ref_type_id', 1);
+    }
+ 
+    public function getAccountCountAttribute()
+    {
+        return $this->accountInfos()->count();
     }
 }

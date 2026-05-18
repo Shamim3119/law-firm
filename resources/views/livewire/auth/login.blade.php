@@ -15,14 +15,15 @@
             </div>
 
             @if (session()->has('error'))
-                <div style="color:red">{{ session('error') }}</div>
+                <div style="text-align: center; font-size:14px; color: red">{{ session('error') }} <br>
+        Please try again.<br><br></div>
             @endif
             
-            <form wire:submit.prevent="login" class="login-form" id="loginForm" novalidate>
+            <form wire:submit.prevent="login" class="login-form" id="loginForm">
   
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <input wire:model="email" type="email" id="email" name="email" required autocomplete="email">
+                        <input wire:model="email" wire:model.blur="email"  type="email" id="email" name="email" required >
                         <label for="email">Email</label>
                         <div class="input-line"></div>
                         <div class="ripple-container"></div>
@@ -32,7 +33,7 @@
 
                 <div class="form-group">
                     <div class="input-wrapper password-wrapper">
-                        <input wire:model="password" type="password" id="password" name="password" required autocomplete="current-password">
+                        <input wire:model="password" wire:model.blur="password"  type="password" id="password" name="password" required  >
                         <label for="password">Password</label>
                         <div class="input-line"></div>
                         <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">

@@ -6,6 +6,8 @@ use App\Livewire\Auth\Login;
 
 use App\Livewire\Dashboard\Dashboard;
 use App\Livewire\Parameter\ParameterCrud;
+use App\Livewire\Parameter\BankOperatorCrud;
+
 
 use App\Livewire\AttendanceSchedule\AttendanceScheduleCrud;
 
@@ -32,10 +34,11 @@ use App\Livewire\AttendanceInfo\AttendanceInfoCrud;
 use App\Livewire\AttendanceStatus\AttendanceStatusCrud; 
 use App\Livewire\LeaveInfo\LeaveInfoCrud; 
 use App\Livewire\LeaveStatus\LeaveStatusCrud; 
- 
 
- 
- 
+
+use App\Livewire\Accounts\AccountsCrud; 
+use App\Livewire\Journals\JournalsCrud; 
+use App\Livewire\Ledger\LedgerCrud;
 
  
  
@@ -49,11 +52,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/parameter', ParameterCrud::class)->name('parameter.index');
-    
+    Route::get('/bank-operator', BankOperatorCrud::class)->name('bank-operator.index');
+
     Route::get('/attendance-schedule', AttendanceScheduleCrud::class)->name('attendance-schedule.index');
 
     Route::get('/leave-schedule', LeaveScheduleCrud::class)->name('leave-schedule.index');
-    Route::get('/prorated_leave', ProratedLeaveCrud::class)->name('prorated-leave.index');
+    Route::get('/prorated-leave', ProratedLeaveCrud::class)->name('prorated-leave.index');
     Route::get('/leave-calendar', LeaveCalendarCrud::class)->name('leave-calendar.index');
 
     Route::get('/attendance-info', AttendanceInfoCrud::class)->name('attendance-info.index');
@@ -81,6 +85,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cases/form', CasesForm::class)->name('cases.create');  
     Route::get('/cases/form/{id}', CasesForm::class)->name('cases.edit'); 
 
+
+    Route::get('/accounts', AccountsCrud::class)->name('accounts.index');
+    Route::get('/journals', JournalsCrud::class)->name('journals.index');
+    Route::get('/ledger', LedgerCrud::class)->name('ledger.index');
+
+
+ 
    
    // Route::get('/appointment/form', AppointmentForm::class)->name('appointment.create');  
    // Route::get('/appointment/form/{id}', AppointmentForm::class)->name('appointment.edit'); 

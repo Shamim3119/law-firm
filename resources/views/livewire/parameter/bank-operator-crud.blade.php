@@ -64,10 +64,13 @@
 
     <div class='row'>
         <div class='col-12 col-md-6'>
+
+
             <button 
                 wire:click="create"
                 class="mb-3 btn btn-sm btn-primary"
-                @if($updateMode) style="display:none;" @endif >
+                @if($updateMode) style="display:none;" @endif
+            >
                 New {{ ucfirst($activeTab) }}
             </button>
          
@@ -77,13 +80,26 @@
                     <div class="card-title">{{ ucfirst($activeTab) }} Update</div>
                 </div>
 
-                <form wire:submit.prevent="store" wire:key="parameter-form-{{ $updateMode ? 'edit' : 'create' }}">
+                <form wire:submit.prevent="store" wire:key="bank_operator-form-{{ $updateMode ? 'edit' : 'create' }}">
                     
                     <div class="card-body">
 
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1" wire:model="inactive">
                             <label class="form-check-label" for="exampleCheck1">Inactive</label>
+                        </div>
+ 
+
+
+                        <div class="mb-3">
+                          <label>Bank Type :</label>
+                                <select class="form-select" wire:model="type_id">
+                                    <option selected value="">Select Bank Type</option>
+                                        @foreach($bank_types as $type)
+                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                        @endforeach
+                                </select>
+                                @error('type_id') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="mb-3">
@@ -101,7 +117,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="m-3 d-flex justify-content-center">
-                            @if($parameter_id)
+                            @if($bank_operator_id)
                                 <button type="submit" class="btn btn-primary">Update</button>&nbsp;&nbsp;
                                 <button type="button" wire:click="cancel" class="btn btn-secondary">Cancel</button>
                             @else
@@ -126,6 +142,7 @@
                         <thead>
                             <tr>
                                 <th style="width:2%">SL</th>
+                                <th>Type</th>
                                 <th>Name</th>
                                 <th style="width:15%;text-align:center;">Status</th>
                                 <th style="text-align:center; width:150px;">Action</th>
@@ -133,22 +150,23 @@
                         </thead>
 
                         <tbody>
-                            @foreach($parameters as $parameter)
-                                <tr wire:key="parameter-row-{{ $parameter->id }}">
+                            @foreach($bank_operators as $bank_operator)
+                                <tr wire:key="bank-operator-row-{{ $bank_operator->id }}">
 
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $parameter->name }}</td>
-                                    <td class="{{ $parameter->inactive ? 'text-danger' : '' }}" style="text-align:center">{{ $parameter->inactive == 0 ? 'Active' : 'Inactive' }}</td>
+                                    <td>{{ $bank_operator->bank_type ? $bank_operator->bank_type->name : 'N/A' }}</td>
+                                    <td>{{ $bank_operator->name }}</td>
+                                    <td class="{{ $bank_operator->inactive ? 'text-danger' : '' }}" style="text-align:center">{{ $bank_operator->inactive == 0 ? 'Active' : 'Inactive' }}</td>
 
                                     <td style="text-align:center;width:150px;">
                                         <button   
-                                            wire:click="edit({{ $parameter->id }})"
+                                            wire:click="edit({{ $bank_operator->id }})"
                                             class="btn btn-primary btn-sm">
                                             Edit
                                         </button>
 
                                         <button
-                                            wire:click="delete({{ $parameter->id }})"
+                                            wire:click="delete({{ $bank_operator->id }})"
                                             class="btn btn-danger btn-sm"
                                         >
                                             Delete
@@ -166,5 +184,4 @@
 
     {!! MyHelper::get_toast_dispatch() !!}
 
- 
 </div>
